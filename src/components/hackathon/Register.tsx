@@ -17,7 +17,7 @@ export function Register() {
         <Reveal>
           <div className="relative rounded-[2rem] p-px border-orbit">
             <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-background px-6 py-14 text-center sm:px-14 sm:py-20">
-              <div className="pointer-events-none absolute inset-0 bg-neural-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-neural-grid opacity-60 mask-[radial-gradient(ellipse_at_center,black,transparent_70%)]" />
               <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-cyan/20 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-violet/25 blur-3xl" />
 

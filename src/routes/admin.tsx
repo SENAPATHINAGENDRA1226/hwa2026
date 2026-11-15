@@ -509,41 +509,37 @@ function AdminCommandCenter() {
               <span className="text-xs font-mono text-muted-foreground">Filter by Payment:</span>
               <button
                 onClick={() => setPaymentFilter("all")}
-                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${
-                  paymentFilter === "all"
+                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "all"
                     ? "border-cyan bg-cyan/15 text-cyan"
                     : "border-border text-muted-foreground hover:bg-muted"
-                }`}
+                  }`}
               >
                 All Teams ({teams.length})
               </button>
               <button
                 onClick={() => setPaymentFilter("pending")}
-                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${
-                  paymentFilter === "pending"
+                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "pending"
                     ? "border-amber-400 bg-amber-400/15 text-amber-300 font-bold"
                     : "border-border text-muted-foreground hover:bg-muted"
-                }`}
+                  }`}
               >
                 Pending Approval ({teams.filter((t) => t.paymentStatus === "pending").length})
               </button>
               <button
                 onClick={() => setPaymentFilter("verified")}
-                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${
-                  paymentFilter === "verified"
+                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "verified"
                     ? "border-emerald-500 bg-emerald-500/15 text-emerald-400"
                     : "border-border text-muted-foreground hover:bg-muted"
-                }`}
+                  }`}
               >
                 Verified / Confirmed ({teams.filter((t) => t.paymentStatus === "verified").length})
               </button>
               <button
                 onClick={() => setPaymentFilter("rejected")}
-                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${
-                  paymentFilter === "rejected"
+                className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "rejected"
                     ? "border-rose-500 bg-rose-500/15 text-rose-400"
                     : "border-border text-muted-foreground hover:bg-muted"
-                }`}
+                  }`}
               >
                 Rejected ({teams.filter((t) => t.paymentStatus === "rejected").length})
               </button>
@@ -598,19 +594,18 @@ function AdminCommandCenter() {
                           <td className="p-4">
                             <Badge
                               variant="outline"
-                              className={`text-xs ${
-                                t.paymentStatus === "verified"
+                              className={`text-xs ${t.paymentStatus === "verified"
                                   ? "border-emerald-500 text-emerald-400 bg-emerald-500/10 font-bold"
                                   : t.paymentStatus === "rejected"
-                                  ? "border-rose-500 text-rose-400 bg-rose-500/10"
-                                  : "border-amber-400 text-amber-300 bg-amber-400/10 font-bold"
-                              }`}
+                                    ? "border-rose-500 text-rose-400 bg-rose-500/10"
+                                    : "border-amber-400 text-amber-300 bg-amber-400/10 font-bold"
+                                }`}
                             >
                               {t.paymentStatus === "verified"
                                 ? "CONFIRMED ✓"
                                 : t.paymentStatus === "rejected"
-                                ? "REJECTED"
-                                : "PENDING APPROVAL"}
+                                  ? "REJECTED"
+                                  : "PENDING APPROVAL"}
                             </Badge>
                           </td>
                           <td className="p-4">
@@ -778,19 +773,18 @@ function AdminCommandCenter() {
                 <button
                   key={mode}
                   onClick={() => setR1Filter(mode)}
-                  className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${
-                    r1Filter === mode
+                  className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${r1Filter === mode
                       ? "border-cyan bg-cyan/15 text-cyan"
                       : "border-border text-muted-foreground hover:bg-muted"
-                  }`}
+                    }`}
                 >
                   {mode === "all"
                     ? `All Teams (${teams.length})`
                     : mode === "selected"
-                    ? `Selected Preview (${selectedCount})`
-                    : mode === "not_selected"
-                    ? `Not Selected Preview (${notSelectedCount})`
-                    : `Pending Review (${pendingCount})`}
+                      ? `Selected Preview (${selectedCount})`
+                      : mode === "not_selected"
+                        ? `Not Selected Preview (${notSelectedCount})`
+                        : `Pending Review (${pendingCount})`}
                 </button>
               ))}
             </div>
@@ -847,19 +841,18 @@ function AdminCommandCenter() {
                             <td className="p-4">
                               <Badge
                                 variant="outline"
-                                className={`text-xs ${
-                                  isSelected
+                                className={`text-xs ${isSelected
                                     ? "border-emerald-500 text-emerald-400 bg-emerald-500/10"
                                     : isNotSelected
-                                    ? "border-rose-500/50 text-rose-400 bg-rose-500/10"
-                                    : "border-amber-500 text-amber-400 bg-amber-500/10"
-                                }`}
+                                      ? "border-rose-500/50 text-rose-400 bg-rose-500/10"
+                                      : "border-amber-500 text-amber-400 bg-amber-500/10"
+                                  }`}
                               >
                                 {isSelected
                                   ? "Selected for Round 2"
                                   : isNotSelected
-                                  ? "Not Selected for Round 2"
-                                  : "Pending Review"}
+                                    ? "Not Selected for Round 2"
+                                    : "Pending Review"}
                               </Badge>
                             </td>
                             <td className="p-4 text-right">
@@ -869,11 +862,10 @@ function AdminCommandCenter() {
                                     size="sm"
                                     variant={isSelected ? "default" : "outline"}
                                     onClick={() => handleToggleSelection(t.teamId, sel?.status)}
-                                    className={`h-7 text-xs ${
-                                      isSelected
+                                    className={`h-7 text-xs ${isSelected
                                         ? "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold"
                                         : "border-border hover:border-emerald-500"
-                                    }`}
+                                      }`}
                                   >
                                     {isSelected ? "Selected ✓" : "Promote"}
                                   </Button>
@@ -884,11 +876,10 @@ function AdminCommandCenter() {
                                       db.setRound1Selection(t.teamId, "not_selected", "Super Admin");
                                       refreshAll();
                                     }}
-                                    className={`h-7 text-xs ${
-                                      isNotSelected
+                                    className={`h-7 text-xs ${isNotSelected
                                         ? "border-rose-500 text-rose-400 bg-rose-500/10"
                                         : "border-border text-muted-foreground"
-                                    }`}
+                                      }`}
                                   >
                                     Exclude
                                   </Button>
@@ -1181,7 +1172,7 @@ function AdminCommandCenter() {
           {/* ======================================================== */}
           <TabsContent value="audit" className="space-y-4">
             <h2 className="font-display font-bold text-xl">System Audit & Action Trail</h2>
-            <div className="bg-card border border-border rounded-2xl p-4 divide-y divide-border max-h-[600px] overflow-y-auto">
+            <div className="bg-card border border-border rounded-2xl p-4 divide-y divide-border max-h-150 overflow-y-auto">
               {auditLogs.map((l) => (
                 <div key={l.id} className="py-3 flex items-start justify-between text-xs font-mono">
                   <div>
@@ -1352,7 +1343,7 @@ function AdminCommandCenter() {
                 </span>
                 <div className="h-44 w-full rounded-xl border border-border/80 bg-black/60 flex items-center justify-center overflow-hidden p-2">
                   {paymentReviewTeam.paymentProofUrl &&
-                  paymentReviewTeam.paymentProofUrl.startsWith("data:") ? (
+                    paymentReviewTeam.paymentProofUrl.startsWith("data:") ? (
                     <img
                       src={paymentReviewTeam.paymentProofUrl}
                       alt="Payment Receipt"

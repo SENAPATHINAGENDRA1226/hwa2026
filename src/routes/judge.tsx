@@ -79,7 +79,7 @@ function JudgePortalPage() {
           setJudgeId(parsed.id);
           setJudgeName(parsed.name);
           setIsAuthenticated(true);
-        } catch {}
+        } catch { }
       }
     }
   }, []);
@@ -581,7 +581,7 @@ function JudgePortalPage() {
               <div className="space-y-4">
                 <div className="bg-card border border-border rounded-2xl p-4">
                   <h3 className="font-display font-semibold text-sm mb-3">Round 1 Scores Overview</h3>
-                  <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                  <div className="space-y-2 max-h-125 overflow-y-auto pr-1">
                     {r1Teams.map((t) => {
                       const ev = r1Evaluations.find((e) => e.teamId === t.teamId);
                       return (
@@ -591,11 +591,10 @@ function JudgePortalPage() {
                             setR1SelectedTeamId(t.teamId);
                             loadR1TeamEval(t.teamId);
                           }}
-                          className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${
-                            r1SelectedTeamId === t.teamId
+                          className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${r1SelectedTeamId === t.teamId
                               ? "border-cyan bg-cyan/10"
                               : "border-border hover:bg-muted/40"
-                          }`}
+                            }`}
                         >
                           <div>
                             <div className="font-bold text-foreground">{t.teamName}</div>
@@ -813,11 +812,10 @@ function JudgePortalPage() {
                               setR2SelectedTeamId(t.teamId);
                               loadR2TeamEval(t.teamId);
                             }}
-                            className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${
-                              r2SelectedTeamId === t.teamId
+                            className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${r2SelectedTeamId === t.teamId
                                 ? "border-violet bg-violet/10"
                                 : "border-border hover:bg-muted/40"
-                            }`}
+                              }`}
                           >
                             <div>
                               <div className="font-bold text-foreground">{t.teamName}</div>

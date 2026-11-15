@@ -75,7 +75,8 @@ function PublicResultsPage() {
             </div>
 
             {/* Winner Showcase */}
-            <div className="relative overflow-hidden rounded-3xl border-2 border-amber-400/80 bg-gradient-to-b from-amber-500/20 via-zinc-950 to-neutral-950 p-8 sm:p-12 text-center shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl border-2 border-amber-400/80 bg-gradient
+            -to-b from-amber-500/20 via-zinc-950 to-neutral-950 p-8 sm:p-12 text-center shadow-2xl">
               <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-400/20 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-cyan/20 blur-3xl" />
 
@@ -84,7 +85,7 @@ function PublicResultsPage() {
                   <Trophy className="h-4 w-4" /> FIRST PLACE — 1ST RANK
                 </div>
 
-                <h3 className="font-display text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-100 uppercase tracking-wide">
+                <h3 className="font-display text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-linear-to-r from-amber-200 via-amber-400 to-yellow-100 uppercase tracking-wide">
                   {winnerTeam.teamName}
                 </h3>
 
@@ -114,7 +115,7 @@ function PublicResultsPage() {
 
             {/* Runner-Up Showcase */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-3xl border border-cyan/50 bg-gradient-to-b from-cyan/15 via-zinc-950 to-neutral-950 p-8 text-center shadow-xl space-y-4">
+              <div className="rounded-3xl border border-cyan/50 bg-linear-to-b from-cyan/15 via-zinc-950 to-neutral-950 p-8 text-center shadow-xl space-y-4">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan/20 border border-cyan/60 text-cyan font-mono text-xs font-bold uppercase">
                   <Award className="h-3.5 w-3.5" /> SECOND PLACE — RUNNER UP
                 </div>
@@ -142,7 +143,7 @@ function PublicResultsPage() {
 
               {/* Third Place or Finalist Showcase */}
               {thirdPlaceTeam ? (
-                <div className="rounded-3xl border border-violet/50 bg-gradient-to-b from-violet/15 via-zinc-950 to-neutral-950 p-8 text-center shadow-xl space-y-4">
+                <div className="rounded-3xl border border-violet/50 bg-linear-to-b from-violet/15 via-zinc-950 to-neutral-950 p-8 text-center shadow-xl space-y-4">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet/20 border border-violet/60 text-violet font-mono text-xs font-bold uppercase">
                     <Award className="h-3.5 w-3.5" /> THIRD PLACE
                   </div>
