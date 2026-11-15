@@ -1,0 +1,129 @@
+export type AcademicYear = "1st Year" | "2nd Year" | "3rd Year" | "4th Year";
+
+export type PaymentStatus = "pending" | "verified" | "rejected";
+export type AttendanceStatus = "registered" | "checked_in";
+
+export interface TeamMember {
+  name: string;
+  email: string;
+  phone?: string;
+  college?: string;
+  role: "Leader" | "Member";
+}
+
+export interface Team {
+  id: string; // internal UUID
+  teamId: string; // e.g. HWA-2026-101
+  teamName: string;
+  academicYear: AcademicYear;
+  theme: string;
+  members: TeamMember[];
+  paymentProofUrl?: string;
+  paymentTransactionId?: string;
+  paymentStatus: PaymentStatus;
+  attendanceStatus: AttendanceStatus;
+  registeredAt: string;
+}
+
+export interface EvaluationCriteria {
+  innovation: number; // 0-25
+  techComplexity: number; // 0-25
+  feasibility: number; // 0-25
+  presentation: number; // 0-25
+}
+
+export interface Round1Evaluation {
+  id: string;
+  teamId: string;
+  judgeName: string;
+  judgeId: string;
+  criteria: EvaluationCriteria;
+  totalScore: number; // 0-100
+  feedback: string;
+  isSubmitted: boolean;
+  submittedAt: string;
+  updatedAt?: string | undefined;
+}
+
+export type Round1SelectionStatus = "pending_review" | "selected" | "not_selected";
+
+export interface Round1Selection {
+  teamId: string;
+  status: Round1SelectionStatus;
+  notes?: string | undefined;
+  selectedAt?: string | undefined;
+  selectedBy?: string | undefined;
+}
+
+export interface Round2EvaluationCriteria {
+  implementation: number; // 0-30
+  aiArchitecture: number; // 0-30
+  viability: number; // 0-20
+  qnaDefense: number; // 0-20
+}
+
+export interface Round2Evaluation {
+  id: string;
+  teamId: string;
+  judgeName: string;
+  judgeId: string;
+  criteria: Round2EvaluationCriteria;
+  totalScore: number; // 0-100
+  feedback: string;
+  isSubmitted: boolean;
+  submittedAt: string;
+  updatedAt?: string | undefined;
+}
+
+export type FinalPosition = "first_place" | "second_place" | "third_place" | "finalist";
+
+export interface FinalResult {
+  teamId: string;
+  position: FinalPosition;
+  notes?: string;
+  finalizedAt?: string;
+  finalizedBy?: string;
+}
+
+export interface ResultPublication {
+  round: "round_1" | "final";
+  isPublished: boolean;
+  publishedAt?: string;
+  publishedBy?: string;
+  stats?: {
+    totalTeams: number;
+    evaluatedTeams: number;
+    selectedCount?: number;
+    notSelectedCount?: number;
+    winnerTeamId?: string;
+    runnerUpTeamId?: string;
+  };
+}
+
+export type CertificateCategory =
+  | "round_1_participation"
+  | "winner"
+  | "runner_up"
+  | "third_place"
+  | "round_2_participation";
+
+export interface CertificateRecord {
+  id: string;
+  certificateId: string; // e.g. HWA-CERT-XXXXX
+  teamId: string;
+  teamName: string;
+  recipientName: string;
+  recipientEmail: string;
+  category: CertificateCategory;
+  issuedAt: string;
+  verificationCode: string;
+  template: string;
+}
+
+export interface AuditLog {
+  id: string;
+  action: string;
+  performedBy: string;
+  timestamp: string;
+  details: Record<string, unknown>;
+}
