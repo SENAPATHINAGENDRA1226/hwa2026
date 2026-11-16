@@ -70,7 +70,7 @@ export function CertificateModal({ certificate, onClose }: CertificateModalProps
           <div
             ref={certRef}
             id="printable-certificate"
-            className="relative w-full max-w-[850px] aspect-[1.414/1] bg-gradient-to-br from-slate-950 via-zinc-900 to-neutral-950 border-[6px] border-double border-cyan/40 p-8 sm:p-12 flex flex-col justify-between text-center shadow-2xl overflow-hidden rounded-lg"
+            className="relative w-full max-w-212.5 aspect-[1.414/1] bg-linear-to-br from-slate-950 via-zinc-900 to-neutral-950 border-[6px] border-double border-cyan/40 p-8 sm:p-12 flex flex-col justify-between text-center shadow-2xl overflow-hidden rounded-lg"
           >
             {/* Background cyber watermark patterns */}
             <div className="pointer-events-none absolute inset-0 bg-neural-grid opacity-25" />
@@ -87,7 +87,7 @@ export function CertificateModal({ certificate, onClose }: CertificateModalProps
                 HACK WITH AVANTHI 2026
               </h1>
               <p className="mt-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                24-Hour AI & Technical Hackathon • 18 – 19 December 2026
+                2 Days AI & Technical Hackathon • 18 – 19 December 2026
               </p>
 
               <div className={`mt-4 inline-block px-4 py-1 rounded-full border text-xs font-mono font-semibold uppercase tracking-wider ${getBadgeColor(certificate.category)}`}>
@@ -100,7 +100,7 @@ export function CertificateModal({ certificate, onClose }: CertificateModalProps
               <p className="text-xs sm:text-sm font-light text-muted-foreground italic">
                 This credential is proudly presented to
               </p>
-              <h2 className="mt-2 font-display text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan via-white to-violet uppercase tracking-wide">
+              <h2 className="mt-2 font-display text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-linear-to-r from-cyan via-white to-violet uppercase tracking-wide">
                 {certificate.recipientName}
               </h2>
               <p className="mt-3 text-xs sm:text-sm text-foreground/80 max-w-xl mx-auto leading-relaxed">
@@ -115,7 +115,7 @@ export function CertificateModal({ certificate, onClose }: CertificateModalProps
                   Dr. G. Suresh Kumar
                 </div>
                 <div className="font-semibold text-foreground mt-1">Principal</div>
-                <div className="text-[10px] text-muted-foreground">AIET Campus</div>
+                <div className="text-[10px] text-muted-foreground">AVANTHI COLLEGE </div>
               </div>
 
               <div className="flex flex-col items-center">

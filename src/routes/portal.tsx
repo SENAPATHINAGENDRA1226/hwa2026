@@ -198,13 +198,6 @@ function StudentPortal() {
                 Verify & Load Dashboard <ArrowRight className="h-4 w-4" />
               </Button>
             </form>
-
-            <div className="pt-4 border-t border-border/60 text-center text-xs text-muted-foreground">
-              Don't have a Team ID yet?{" "}
-              <Link to="/register" className="text-cyan font-semibold hover:underline">
-                Register your team now
-              </Link>
-            </div>
           </div>
         ) : (
           /* AUTHENTICATED TEAM DASHBOARD */
@@ -223,8 +216,8 @@ function StudentPortal() {
                     <Badge
                       variant="outline"
                       className={`text-xs ${selectedTeam.paymentStatus === "verified"
-                          ? "border-emerald-500 text-emerald-400 bg-emerald-500/10"
-                          : "border-amber-500 text-amber-400 bg-amber-500/10"
+                        ? "border-emerald-500 text-emerald-400 bg-emerald-500/10"
+                        : "border-amber-500 text-amber-400 bg-amber-500/10"
                         }`}
                     >
                       Payment: {selectedTeam.paymentStatus.toUpperCase()}
@@ -322,8 +315,8 @@ function StudentPortal() {
                   <div className="flex flex-col items-center">
                     <div
                       className={`h-9 w-9 rounded-full border-2 flex items-center justify-center ${r1Eval?.isSubmitted
-                          ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
-                          : "bg-muted border-border text-muted-foreground"
+                        ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
+                        : "bg-muted border-border text-muted-foreground"
                         }`}
                     >
                       {r1Eval?.isSubmitted ? <CheckCircle2 className="h-5 w-5" /> : <Clock className="h-4 w-4" />}
@@ -350,10 +343,10 @@ function StudentPortal() {
                   <div className="flex flex-col items-center">
                     <div
                       className={`h-9 w-9 rounded-full border-2 flex items-center justify-center ${r1Pub.isPublished
-                          ? isR1Selected
-                            ? "bg-cyan/20 border-cyan text-cyan"
-                            : "bg-violet/20 border-violet text-violet"
-                          : "bg-muted border-border text-muted-foreground"
+                        ? isR1Selected
+                          ? "bg-cyan/20 border-cyan text-cyan"
+                          : "bg-violet/20 border-violet text-violet"
+                        : "bg-muted border-border text-muted-foreground"
                         }`}
                     >
                       {r1Pub.isPublished ? <CheckCircle2 className="h-5 w-5" /> : <Clock className="h-4 w-4" />}
@@ -419,8 +412,8 @@ function StudentPortal() {
                       <div className="flex flex-col items-center">
                         <div
                           className={`h-9 w-9 rounded-full border-2 flex items-center justify-center ${r2Eval?.isSubmitted
-                              ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
-                              : "bg-muted border-border text-muted-foreground"
+                            ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
+                            : "bg-muted border-border text-muted-foreground"
                             }`}
                         >
                           {r2Eval?.isSubmitted ? <CheckCircle2 className="h-5 w-5" /> : <Clock className="h-4 w-4" />}
@@ -447,8 +440,8 @@ function StudentPortal() {
                       <div className="flex flex-col items-center">
                         <div
                           className={`h-9 w-9 rounded-full border-2 flex items-center justify-center ${finalPub.isPublished
-                              ? "bg-amber-500/20 border-amber-500 text-amber-400"
-                              : "bg-muted border-border text-muted-foreground"
+                            ? "bg-amber-500/20 border-amber-500 text-amber-400"
+                            : "bg-muted border-border text-muted-foreground"
                             }`}
                         >
                           {finalPub.isPublished ? <Award className="h-5 w-5" /> : <Clock className="h-4 w-4" />}

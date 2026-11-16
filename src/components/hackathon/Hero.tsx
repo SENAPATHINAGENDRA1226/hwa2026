@@ -80,7 +80,7 @@ export function Hero() {
           </h1>
           <p className="hero-fade mt-6 font-display text-lg tracking-wide text-cyan sm:text-2xl">{EVENT.tagline}</p>
           <p className="hero-fade mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            A two-day, 24-hour technical hackathon at {EVENT.institute}. Assemble your team, pick a theme and build
+            A two-day,technical hackathon at {EVENT.institute}. Assemble your team, pick a theme and build
             the future of intelligent technology.
           </p>
           <div className="hero-fade mt-8 flex flex-wrap items-center gap-4">

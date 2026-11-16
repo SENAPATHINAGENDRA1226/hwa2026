@@ -11,112 +11,7 @@ import {
   PaymentStatus,
 } from "./types";
 
-const STORAGE_KEY_PREFIX = "hwa_2026_";
-
-const INITIAL_TEAMS: Team[] = [
-  {
-    id: "team-uuid-001",
-    teamId: "HWA-2026-101",
-    teamName: "NeuralSentinels",
-    academicYear: "4th Year",
-    theme: "Generative AI",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-10T10:15:00Z",
-    paymentTransactionId: "UPI98234827101",
-    members: [
-      { name: "Rahul Sharma", email: "rahul.s@aiet.edu.in", role: "Leader", phone: "+91 9876543210", college: "AIET" },
-      { name: "Ananya Iyer", email: "ananya.i@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Karthik Verma", email: "karthik.v@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Sneha Reddy", email: "sneha.r@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-  {
-    id: "team-uuid-002",
-    teamId: "HWA-2026-102",
-    teamName: "QuantumCipher",
-    academicYear: "3rd Year",
-    theme: "Cybersecurity",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-10T11:20:00Z",
-    paymentTransactionId: "UPI98234827102",
-    members: [
-      { name: "Vikas Patel", email: "vikas.p@aiet.edu.in", role: "Leader", phone: "+91 9876543211", college: "AIET" },
-      { name: "Pooja Hegde", email: "pooja.h@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Aditya Nair", email: "aditya.n@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Meera Das", email: "meera.d@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-  {
-    id: "team-uuid-003",
-    teamId: "HWA-2026-103",
-    teamName: "GreenPulse AI",
-    academicYear: "3rd Year",
-    theme: "Sustainability",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-10T12:00:00Z",
-    paymentTransactionId: "UPI98234827103",
-    members: [
-      { name: "Tarun Chawla", email: "tarun.c@aiet.edu.in", role: "Leader", phone: "+91 9876543212", college: "AIET" },
-      { name: "Divya Rao", email: "divya.r@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Akash Singhania", email: "akash.s@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Kavya Menon", email: "kavya.m@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-  {
-    id: "team-uuid-004",
-    teamId: "HWA-2026-104",
-    teamName: "BioSynth Med",
-    academicYear: "2nd Year",
-    theme: "HealthTech",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-10T13:45:00Z",
-    paymentTransactionId: "UPI98234827104",
-    members: [
-      { name: "Siddharth Rao", email: "siddharth.r@aiet.edu.in", role: "Leader", phone: "+91 9876543213", college: "AIET" },
-      { name: "Nisha Pillai", email: "nisha.p@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Gautam Bose", email: "gautam.b@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Rhea Sen", email: "rhea.s@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-  {
-    id: "team-uuid-005",
-    teamId: "HWA-2026-105",
-    teamName: "AeroBotix",
-    academicYear: "4th Year",
-    theme: "IoT & Robotics",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-11T09:30:00Z",
-    paymentTransactionId: "UPI98234827105",
-    members: [
-      { name: "Arjun Reddy", email: "arjun.r@aiet.edu.in", role: "Leader", phone: "+91 9876543214", college: "AIET" },
-      { name: "Kiran Kumar", email: "kiran.k@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Bhavana Murthy", email: "bhavana.m@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Harish Varma", email: "harish.v@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-  {
-    id: "team-uuid-006",
-    teamId: "HWA-2026-106",
-    teamName: "ChainLedger Pro",
-    academicYear: "3rd Year",
-    theme: "Blockchain & Web3",
-    paymentStatus: "verified",
-    attendanceStatus: "checked_in",
-    registeredAt: "2026-11-11T14:10:00Z",
-    paymentTransactionId: "UPI98234827106",
-    members: [
-      { name: "Prateek Joshi", email: "prateek.j@aiet.edu.in", role: "Leader", phone: "+91 9876543215", college: "AIET" },
-      { name: "Lavanya Natarajan", email: "lavanya.n@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Sumanth Shetty", email: "sumanth.s@aiet.edu.in", role: "Member", college: "AIET" },
-      { name: "Preeti Shenoy", email: "preeti.s@aiet.edu.in", role: "Member", college: "AIET" },
-    ],
-  },
-];
+const STORAGE_KEY_PREFIX = "hwa_2026_prod_";
 
 const inMemoryStore: Record<string, string> = {};
 
@@ -168,8 +63,8 @@ class HwaDatabase {
   }
 
   private ensureInitialized() {
-    if (getItem<Team[]>("teams", []).length === 0) {
-      setItem("teams", INITIAL_TEAMS);
+    if (getItem<Team[] | null>("teams", null) === null) {
+      setItem("teams", []);
       setItem("round_1_evaluations", []);
       setItem("round_1_selections", []);
       setItem("round_2_evaluations", []);
@@ -185,7 +80,7 @@ class HwaDatabase {
           action: "SYSTEM_INITIALIZED",
           performedBy: "Super Admin",
           timestamp: new Date().toISOString(),
-          details: { initializedTeams: INITIAL_TEAMS.length },
+          details: { initializedTeams: 0 },
         },
       ]);
     }
@@ -193,7 +88,7 @@ class HwaDatabase {
 
   // TEAMS
   getTeams(): Team[] {
-    return getItem<Team[]>("teams", INITIAL_TEAMS);
+    return getItem<Team[]>("teams", []);
   }
 
   getTeam(teamId: string): Team | undefined {

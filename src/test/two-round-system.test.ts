@@ -4,6 +4,20 @@ import { db } from "../lib/db";
 describe("HWA 2026 — Two-Round Hackathon Management System", () => {
   beforeEach(() => {
     db.resetToDefault();
+    // Seed fresh test teams for test harness
+    for (let i = 1; i <= 4; i++) {
+      db.registerTeam({
+        teamName: `TestTeam-${i}`,
+        academicYear: "3rd Year",
+        theme: "Generative AI",
+        paymentStatus: "verified",
+        attendanceStatus: "checked_in",
+        members: [
+          { name: `Member ${i}-1`, email: `m${i}1@aiet.edu.in`, role: "Leader" },
+          { name: `Member ${i}-2`, email: `m${i}2@aiet.edu.in`, role: "Member" },
+        ],
+      });
+    }
   });
 
   it("1. registers a new team with unique ID and pending payment", () => {

@@ -32,7 +32,7 @@ export function About() {
             <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet/25 blur-3xl" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-neon" />
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan">Mission Overview</p>
-            <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">24 hours. Infinite possibilities.</h3>
+            <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">2 Days. Infinite possibilities.</h3>
             <p className="mt-4 leading-relaxed text-muted-foreground">
               From generative AI to sustainable tech, pick one of nine themes and ship something that matters.
               Whether it’s your first hackathon or your fiftieth, you’ll leave with new skills, new friends and a
