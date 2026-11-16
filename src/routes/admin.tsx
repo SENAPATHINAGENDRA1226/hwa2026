@@ -1318,8 +1318,8 @@ function AdminCommandCenter() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Fee Amount:</span>
-                  <span className="font-bold text-foreground">₹500 (Verified Fee)</span>
+                  <span className="text-muted-foreground">Payment Proof:</span>
+                  <span className="font-bold text-foreground">Provided via UPI</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Current Status:</span>
@@ -1391,7 +1391,7 @@ function AdminCommandCenter() {
               }}
               className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs"
             >
-              Approve & Confirm Payment (₹500)
+              Approve & Confirm Payment
             </Button>
           </DialogFooter>
         </DialogContent>

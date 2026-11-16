@@ -220,7 +220,6 @@ function RegisterPage() {
                       <SelectItem value="1st Year">1st Year</SelectItem>
                       <SelectItem value="2nd Year">2nd Year</SelectItem>
                       <SelectItem value="3rd Year">3rd Year</SelectItem>
-                      <SelectItem value="4th Year">4th Year</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -296,40 +295,29 @@ function RegisterPage() {
 
             {/* Payment Details & Upload */}
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 space-y-6">
-              <div>
-                <h2 className="font-display font-semibold text-lg flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-emerald-400" /> Registration Fee Payment (₹500 per team)
+              <div className="text-center sm:text-left">
+                <h2 className="font-display font-semibold text-lg flex items-center justify-center sm:justify-start gap-2">
+                  <CreditCard className="h-5 w-5 text-emerald-400" /> Registration Payment
                 </h2>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Pay the registration fee using any UPI app (GPay, PhonePe, Paytm), enter the transaction reference / UTR, and upload the payment proof.
+                  Scan the QR code using any UPI app to complete payment, enter your transaction reference / UTR, and upload the payment proof.
                 </p>
               </div>
 
-              {/* UPI Details Box */}
-              <div className="p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex flex-col sm:flex-row items-center gap-6">
-                <div className="p-2 bg-white rounded-xl border border-border shrink-0">
+              {/* QR Code Display */}
+              <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 space-y-4">
+                <div className="p-2 bg-black rounded-2xl border border-emerald-500/40 shadow-2xl overflow-hidden max-w-65">
                   <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=upi://pay?pa=dlidesclub@aiet&pn=DLIDES+CLUB&am=500&cu=INR"
-                    alt="UPI Payment QR Code"
-                    className="h-28 w-28"
+                    src="/payment-qr.jpg"
+                    alt="Payment QR Code - Senapathi Nagendra"
+                    className="w-full h-auto rounded-xl object-contain mx-auto"
                   />
                 </div>
-                <div className="space-y-2 text-xs font-mono text-left w-full">
-                  <div className="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
-                    <span className="text-muted-foreground">UPI ID:</span>
-                    <span className="font-bold text-foreground">dlidesclub@aiet</span>
-                  </div>
-                  <div className="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
-                    <span className="text-muted-foreground">Beneficiary:</span>
-                    <span className="font-bold text-foreground">DLIDES CLUB (AIET)</span>
-                  </div>
-                  <div className="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
-                    <span className="text-muted-foreground">Amount:</span>
-                    <span className="font-bold text-emerald-400 text-sm">₹500 (Fixed per Team)</span>
-                  </div>
-                  <div className="text-[11px] text-muted-foreground font-sans pt-1">
-                    Scan using GPay, PhonePe, Paytm, or BHIM. After paying, enter your 12-digit UTR/Ref number below.
-                  </div>
+                <div className="flex items-center gap-2 text-xs font-mono">
+                  <span className="text-muted-foreground">UPI ID:</span>
+                  <span className="font-bold select-all bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/30 text-emerald-300">
+                    9063262364-2@ybl
+                  </span>
                 </div>
               </div>
 
