@@ -1,5 +1,14 @@
 import {
-  Blocks, Bot, BrainCircuit, GraduationCap, HeartPulse, Leaf, ShieldCheck, Sparkles, Wallet, type LucideIcon,
+  Blocks,
+  Bot,
+  BrainCircuit,
+  GraduationCap,
+  HeartPulse,
+  Leaf,
+  ShieldCheck,
+  Sparkles,
+  Wallet,
+  type LucideIcon,
 } from "lucide-react";
 import { useRef } from "react";
 import { THEMES, type ThemeIcon } from "@/lib/event-content";
@@ -7,8 +16,15 @@ import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
 const ICONS: Record<ThemeIcon, LucideIcon> = {
-  sparkles: Sparkles, brain: BrainCircuit, shield: ShieldCheck, blocks: Blocks, bot: Bot,
-  heart: HeartPulse, wallet: Wallet, leaf: Leaf, education: GraduationCap,
+  sparkles: Sparkles,
+  brain: BrainCircuit,
+  shield: ShieldCheck,
+  blocks: Blocks,
+  bot: Bot,
+  heart: HeartPulse,
+  wallet: Wallet,
+  leaf: Leaf,
+  education: GraduationCap,
 };
 
 function ThemeCard({ theme, index }: { theme: (typeof THEMES)[number]; index: number }) {
@@ -45,7 +61,16 @@ function ThemeCard({ theme, index }: { theme: (typeof THEMES)[number]; index: nu
         <div className="relative flex items-start justify-between">
           <div className="relative grid h-16 w-16 place-items-center">
             <svg className="absolute inset-0 h-full w-full animate-spin-slow" viewBox="0 0 64 64" aria-hidden>
-              <circle cx="32" cy="32" r="30" fill="none" stroke="var(--neon-cyan)" strokeOpacity="0.5" strokeWidth="1" strokeDasharray="4 6" />
+              <circle
+                cx="32"
+                cy="32"
+                r="30"
+                fill="none"
+                stroke="var(--neon-cyan)"
+                strokeOpacity="0.5"
+                strokeWidth="1"
+                strokeDasharray="4 6"
+              />
             </svg>
             <svg className="absolute inset-0 h-full w-full animate-spin-reverse" viewBox="0 0 64 64" aria-hidden>
               <circle cx="32" cy="2" r="2.5" fill="var(--neon-violet)" />
@@ -69,14 +94,15 @@ function ThemeCard({ theme, index }: { theme: (typeof THEMES)[number]; index: nu
 
 export function Themes() {
   return (
-    <section id="themes" className="relative px-5 py-24 sm:px-8 sm:py-32">
+    <section id="problem-statements" className="relative px-5 py-24 sm:px-8 sm:py-32 scroll-mt-20">
+      <div id="themes" className="sr-only" />
       <div className="pointer-events-none absolute left-0 top-1/3 h-96 w-96 rounded-full bg-cyan/10 blur-[120px]" />
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          eyebrow="Hackathon themes"
+          eyebrow="Problem Statements & Domains"
           title="Nine Paths Into The"
           highlight="Future"
-          description="Choose the domain that sparks your curiosity. Every theme has its own jury award."
+          description="Choose your problem domain to craft and pitch real-world solutions during Hack With Avanthi 2026."
         />
         <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {THEMES.map((t, i) => (
@@ -87,3 +113,5 @@ export function Themes() {
     </section>
   );
 }
+
+export { Themes as ProblemStatements };

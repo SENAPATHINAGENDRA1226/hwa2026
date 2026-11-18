@@ -3,8 +3,8 @@ import { getTimeLeft } from "@/lib/countdown";
 import { EVENT } from "@/lib/event-content";
 
 describe("countdown", () => {
-  it("counts down to the event kick-off at 9:00 AM IST on 18 Dec 2026", () => {
-    const now = new Date("2026-12-17T09:00:00+05:30");
+  it("counts down to the event kick-off at 9:00 AM IST on 21 Dec 2026", () => {
+    const now = new Date("2026-12-20T09:00:00+05:30");
     expect(getTimeLeft(new Date(EVENT.startsAt), now)).toEqual({
       days: 1, hours: 0, minutes: 0, seconds: 0, done: false,
     });

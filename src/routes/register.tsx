@@ -74,11 +74,7 @@ function RegisterPage() {
       return;
     }
     if (!members[0]?.name.trim() || !members[0]?.email.trim()) {
-      toast.error("Team Leader name and email are required");
-      return;
-    }
-    if (!members[1]?.name.trim() || !members[1]?.email.trim()) {
-      toast.error("At least 2 members are required to form a team");
+      toast.error("Participant / Team Leader name and email are required");
       return;
     }
     if (!txId.trim()) {
@@ -86,7 +82,7 @@ function RegisterPage() {
       return;
     }
 
-    // Filter out blank members beyond 2
+    // Filter out blank members beyond 1
     const validMembers = members.filter((m) => m.name.trim() && m.email.trim());
 
     const newTeam = db.registerTeam({
@@ -229,13 +225,12 @@ function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="academicYear">Academic Year *</Label>
+                  <Label htmlFor="academicYear">Academic Year * (2nd & 3rd Year CSM / CSD)</Label>
                   <Select value={academicYear} onValueChange={(val) => setAcademicYear(val as AcademicYear)}>
                     <SelectTrigger id="academicYear">
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1st Year">1st Year</SelectItem>
                       <SelectItem value="2nd Year">2nd Year</SelectItem>
                       <SelectItem value="3rd Year">3rd Year</SelectItem>
                     </SelectContent>
@@ -262,17 +257,22 @@ function RegisterPage() {
 
             {/* Team Members */}
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 space-y-6">
-              <h2 className="font-display font-semibold text-lg flex items-center gap-2">
-                <Users className="h-5 w-5 text-violet" /> Roster Members (2 to 4)
-              </h2>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h2 className="font-display font-semibold text-lg flex items-center gap-2">
+                  <Users className="h-5 w-5 text-violet" /> Roster Members (1 to 4 Participants)
+                </h2>
+                <span className="font-mono text-xs text-cyan bg-cyan/10 px-2.5 py-1 rounded-md border border-cyan/20">
+                  Individual participation allowed
+                </span>
+              </div>
 
               {members.map((m, idx) => (
                 <div key={idx} className="p-4 border border-border/70 rounded-xl bg-background/50 space-y-3">
                   <div className="flex items-center justify-between text-xs font-mono">
                     <span className="font-bold text-cyan">
-                      {idx === 0 ? "LEADER (MEMBER 01)" : `MEMBER 0${idx + 1}`}
+                      {idx === 0 ? "LEADER / PARTICIPANT (MEMBER 01)" : `MEMBER 0${idx + 1}`}
                     </span>
-                    <span className="text-muted-foreground">{idx < 2 ? "* Required" : "Optional"}</span>
+                    <span className="text-muted-foreground">{idx === 0 ? "* Required" : "Optional"}</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -282,7 +282,7 @@ function RegisterPage() {
                         placeholder="Student name"
                         value={m.name}
                         onChange={(e) => handleMemberChange(idx, "name", e.target.value)}
-                        required={idx < 2}
+                        required={idx === 0}
                       />
                     </div>
                     <div className="space-y-1">
@@ -292,7 +292,7 @@ function RegisterPage() {
                         placeholder="name@aiet.edu.in"
                         value={m.email}
                         onChange={(e) => handleMemberChange(idx, "email", e.target.value)}
-                        required={idx < 2}
+                        required={idx === 0}
                       />
                     </div>
                     {idx === 0 && (
@@ -313,13 +313,18 @@ function RegisterPage() {
 
             {/* Payment Details & Upload */}
             <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 space-y-6">
-              <div className="text-center sm:text-left">
-                <h2 className="font-display font-semibold text-lg flex items-center justify-center sm:justify-start gap-2">
-                  <CreditCard className="h-5 w-5 text-emerald-400" /> Registration Payment
-                </h2>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Scan the QR code using any UPI app to complete payment, enter your transaction reference / UTR, and upload the payment proof.
-                </p>
+              <div className="text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-display font-semibold text-lg flex items-center justify-center sm:justify-start gap-2">
+                    <CreditCard className="h-5 w-5 text-emerald-400" /> Registration Fee Payment
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Scan the QR code using any UPI app to complete payment of ₹250 per team, enter your transaction reference / UTR, and upload payment proof.
+                  </p>
+                </div>
+                <div className="self-center sm:self-auto rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-1.5 font-mono text-xs font-bold text-emerald-300">
+                  Fixed Fee: ₹250 / team
+                </div>
               </div>
 
               {/* QR Code Display */}

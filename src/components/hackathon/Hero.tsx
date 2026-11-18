@@ -54,7 +54,8 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} id="top" className="relative flex min-h-svh items-center overflow-hidden pt-24 pb-16">
+    <section ref={root} id="hero" className="relative flex min-h-svh items-center overflow-hidden pt-24 pb-16 scroll-mt-20">
+      <div id="top" className="sr-only" />
       <div className="pointer-events-none absolute inset-0 bg-neural-grid mask-[radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
       <div className="hero-sphere absolute inset-0 opacity-50 sm:opacity-70 lg:left-[40%] lg:opacity-100">
         <div className="absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet/20 blur-[100px]" />

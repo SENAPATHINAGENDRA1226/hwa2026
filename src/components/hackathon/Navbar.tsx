@@ -4,11 +4,28 @@ import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { RegisterButton } from "./RegisterButton";
 
-const MAIN_NAV = [
+const DESKTOP_NAV = [
   { href: "#about", label: "About" },
-  { href: "#themes", label: "Themes" },
+  { href: "#problem-statements", label: "Problems" },
   { href: "#timeline", label: "Timeline" },
+  { href: "#eligibility", label: "Eligibility" },
   { href: "#prizes", label: "Prizes" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" },
+];
+
+const ALL_SECTIONS = [
+  { href: "#about", label: "About HWA" },
+  { href: "#problem-statements", label: "Problem Statements" },
+  { href: "#timeline", label: "Timeline of Event" },
+  { href: "#eligibility", label: "Eligibility Criteria" },
+  { href: "#guidelines", label: "Guidelines" },
+  { href: "#rules", label: "Rules & Conduct" },
+  { href: "#evaluation", label: "Evaluation & Rubrics" },
+  { href: "#prizes", label: "Prize Pool (₹20,000)" },
+  { href: "#benefits", label: "Participation Benefits" },
+  { href: "#faq", label: "Frequently Asked Questions" },
+  { href: "#contact", label: "Contact & Venue" },
 ];
 
 export function Navbar() {
@@ -30,8 +47,8 @@ export function Navbar() {
           scrolled ? "glass mx-3 sm:mx-6 xl:mx-auto shadow-2xl" : "border border-border/40 bg-background/60 backdrop-blur-md mx-3 sm:mx-6 xl:mx-auto",
         )}
       >
-        {/* Brand / Logo with guaranteed generous right margin to prevent any text merging */}
-        <Link to="/" className="flex items-center gap-3 shrink-0 mr-8 lg:mr-12">
+        {/* Brand / Logo */}
+        <Link to="/" className="flex items-center gap-3 shrink-0 mr-6 lg:mr-8">
           <span className="relative grid h-9 w-9 place-items-center rounded-lg border border-border bg-glass">
             <span className="absolute inset-1 rounded-md border border-cyan/40 animate-spin-slow" />
             <span className="h-2 w-2 rounded-full bg-cyan glow-cyan" />
@@ -42,10 +59,9 @@ export function Navbar() {
         </Link>
 
         {/* Center Desktop Navigation Links */}
-        <div className="hidden xl:flex items-center gap-6 lg:gap-8 shrink-0">
-          {/* Main In-page Sections */}
-          <ul className="flex items-center gap-5 lg:gap-6">
-            {MAIN_NAV.map((l) => (
+        <div className="hidden xl:flex items-center gap-6 lg:gap-7 shrink-0">
+          <ul className="flex items-center gap-4 lg:gap-5">
+            {DESKTOP_NAV.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
@@ -84,7 +100,7 @@ export function Navbar() {
                 to="/admin"
                 className="font-mono text-xs uppercase tracking-wider text-red-400 hover:text-red-300 transition-colors whitespace-nowrap py-1"
               >
-                Command Center
+                Admin
               </Link>
             </li>
             <li>
@@ -114,8 +130,8 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Action Button on Right with guaranteed left margin */}
-        <div className="hidden md:block shrink-0 ml-6">
+        {/* Action Button on Right */}
+        <div className="hidden md:block shrink-0 ml-4">
           <RegisterButton />
         </div>
 
@@ -131,39 +147,76 @@ export function Navbar() {
       </nav>
 
       {/* Mobile Drawer */}
-      <div className={cn("mx-3 mt-2 overflow-hidden rounded-2xl transition-all duration-500 md:hidden", open ? "glass max-h-125 opacity-100" : "max-h-0 opacity-0")}>
-        <ul className="flex flex-col gap-1 p-4 text-xs font-mono uppercase tracking-wider">
-          {MAIN_NAV.map((l) => (
-            <li key={l.href}>
-              <a href={l.href} onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground">
-                {l.label}
-              </a>
+      <div
+        className={cn(
+          "mx-3 mt-2 overflow-y-auto max-h-[85vh] rounded-2xl transition-all duration-500 md:hidden",
+          open ? "glass opacity-100 p-4" : "max-h-0 opacity-0 pointer-events-none p-0",
+        )}
+      >
+        <div className="space-y-4">
+          <p className="font-mono text-[11px] uppercase tracking-widest text-cyan font-bold px-2">
+            Event Sections
+          </p>
+          <ul className="flex flex-col gap-1 text-xs font-mono uppercase tracking-wider">
+            {ALL_SECTIONS.map((l) => (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <p className="font-mono text-[11px] uppercase tracking-widest text-violet font-bold px-2 pt-2 border-t border-border/50">
+            Portals & System
+          </p>
+          <ul className="flex flex-col gap-1 text-xs font-mono uppercase tracking-wider">
+            <li>
+              <Link
+                to="/portal"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2 text-cyan font-bold hover:bg-muted"
+              >
+                Student Portal
+              </Link>
             </li>
-          ))}
-          <li className="pt-2 border-t border-border/50">
-            <Link to="/portal" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-cyan font-bold hover:bg-muted">
-              Student Portal
-            </Link>
-          </li>
-          <li>
-            <Link to="/judge" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-violet hover:bg-muted">
-              Judge Portal
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-red-400 hover:bg-muted">
-              Command Center
-            </Link>
-          </li>
-          <li>
-            <Link to="/results" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-amber-300 hover:bg-muted">
-              Public Results
-            </Link>
-          </li>
-          <li className="pt-3">
-            <RegisterButton className="w-full" />
-          </li>
-        </ul>
+            <li>
+              <Link
+                to="/judge"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2 text-violet hover:bg-muted"
+              >
+                Judge Portal
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2 text-red-400 hover:bg-muted"
+              >
+                Command Center (Admin)
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/results"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2 text-amber-300 hover:bg-muted"
+              >
+                Public Results
+              </Link>
+            </li>
+          </ul>
+
+          <div className="pt-2">
+            <RegisterButton className="w-full text-center justify-center" />
+          </div>
+        </div>
       </div>
     </header>
   );

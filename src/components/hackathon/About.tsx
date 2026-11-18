@@ -24,7 +24,7 @@ export function About() {
           eyebrow="About the hack"
           title="Enter the"
           highlight="Neural Arena"
-          description={`HACK WITH AVANTHI 2026 is a two-day technical hackathon organised by ${EVENT.organiser} at ${EVENT.institute}. Students from every branch team up to solve real-world problems with code, hardware and AI.`}
+          description={`HACK WITH AVANTHI 2026 is a two-day technical hackathon organised by ${EVENT.organiser} at ${EVENT.institute}. 2nd and 3rd year innovators from CSM and CSD departments team up to solve real-world problems with code, hardware, and AI.`}
         />
 
         <div className="mt-16 grid gap-6 lg:grid-cols-5">
