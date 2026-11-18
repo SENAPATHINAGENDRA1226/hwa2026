@@ -285,7 +285,7 @@ function JudgePortalPage() {
       gain.connect(ctx.destination);
       osc.start();
       osc.stop(ctx.currentTime + 0.22);
-    } catch {}
+    } catch { }
   };
 
   const parseTeamIdFromScan = (rawText: string): string | null => {
@@ -294,7 +294,7 @@ function JudgePortalPage() {
     try {
       const parsed = JSON.parse(trimmed);
       if (parsed.teamId) return String(parsed.teamId).toUpperCase();
-    } catch {}
+    } catch { }
     const match = trimmed.match(/HWA-2026-\d+/i);
     if (match) return match[0].toUpperCase();
     const all = db.getTeams();
@@ -346,7 +346,7 @@ function JudgePortalPage() {
       if (html5QrCodeRef.current) {
         try {
           await html5QrCodeRef.current.stop();
-        } catch {}
+        } catch { }
       }
       const qrScanner = new Html5Qrcode("judge-qr-reader");
       html5QrCodeRef.current = qrScanner;
@@ -361,7 +361,7 @@ function JudgePortalPage() {
         (decodedText) => {
           handleProcessCheckIn(decodedText);
         },
-        () => {}
+        () => { }
       );
     } catch (err: unknown) {
       console.error(err);
@@ -378,7 +378,7 @@ function JudgePortalPage() {
       try {
         await html5QrCodeRef.current.stop();
         html5QrCodeRef.current.clear();
-      } catch {}
+      } catch { }
       html5QrCodeRef.current = null;
     }
     setIsScanning(false);
@@ -388,8 +388,8 @@ function JudgePortalPage() {
     return () => {
       if (html5QrCodeRef.current) {
         try {
-          html5QrCodeRef.current.stop().catch(() => {});
-        } catch {}
+          html5QrCodeRef.current.stop().catch(() => { });
+        } catch { }
       }
     };
   }, []);
@@ -454,6 +454,19 @@ function JudgePortalPage() {
     r2Evaluations.length > 0
       ? (r2Evaluations.reduce((acc, curr) => acc + curr.totalScore, 0) / r2Evaluations.length).toFixed(1)
       : "0";
+
+  // Attendance computed values (must be before return)
+  const filteredAttendanceTeams = r1Teams.filter((t) => {
+    if (attendanceFilter === "present" && t.attendanceStatus !== "checked_in") return false;
+    if (attendanceFilter === "pending" && t.attendanceStatus === "checked_in") return false;
+    if (!attendanceSearch.trim()) return true;
+    const query = attendanceSearch.toLowerCase();
+    return (
+      t.teamId.toLowerCase().includes(query) ||
+      t.teamName.toLowerCase().includes(query) ||
+      t.members.some((m) => m.name.toLowerCase().includes(query) || m.email.toLowerCase().includes(query))
+    );
+  });
 
   // IF NOT AUTHENTICATED: SHOW SECURE JUDGE LOGIN GATE
   if (!isAuthenticated) {
@@ -817,8 +830,8 @@ function JudgePortalPage() {
                             loadR1TeamEval(t.teamId);
                           }}
                           className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${r1SelectedTeamId === t.teamId
-                              ? "border-cyan bg-cyan/10"
-                              : "border-border hover:bg-muted/40"
+                            ? "border-cyan bg-cyan/10"
+                            : "border-border hover:bg-muted/40"
                             }`}
                         >
                           <div>
@@ -1054,8 +1067,8 @@ function JudgePortalPage() {
                               loadR2TeamEval(t.teamId);
                             }}
                             className={`p-3 rounded-xl border text-xs cursor-pointer transition-colors flex items-center justify-between ${r2SelectedTeamId === t.teamId
-                                ? "border-violet bg-violet/10"
-                                : "border-border hover:bg-muted/40"
+                              ? "border-violet bg-violet/10"
+                              : "border-border hover:bg-muted/40"
                               }`}
                           >
                             <div>
@@ -1285,7 +1298,7 @@ function JudgePortalPage() {
                       <div>
                         <span className="text-muted-foreground text-[10px] uppercase font-mono">Year & Branch</span>
                         <div className="text-foreground font-medium">
-                          {lastScannedTeam.academicYear} • {lastScannedTeam.department || "CSM / CSD"}
+                          {lastScannedTeam.academicYear} • CSM / CSD
                         </div>
                       </div>
                     </div>
@@ -1321,31 +1334,28 @@ function JudgePortalPage() {
                     <div className="flex items-center gap-1 p-1 bg-muted/60 rounded-lg text-xs">
                       <button
                         onClick={() => setAttendanceFilter("all")}
-                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
-                          attendanceFilter === "all"
-                            ? "bg-cyan text-slate-950 shadow"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${attendanceFilter === "all"
+                          ? "bg-cyan text-slate-950 shadow"
+                          : "text-muted-foreground hover:text-foreground"
+                          }`}
                       >
                         All ({r1Teams.length})
                       </button>
                       <button
                         onClick={() => setAttendanceFilter("present")}
-                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
-                          attendanceFilter === "present"
-                            ? "bg-emerald-500 text-slate-950 shadow"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${attendanceFilter === "present"
+                          ? "bg-emerald-500 text-slate-950 shadow"
+                          : "text-muted-foreground hover:text-foreground"
+                          }`}
                       >
                         Present ({r1Teams.filter((t) => t.attendanceStatus === "checked_in").length})
                       </button>
                       <button
                         onClick={() => setAttendanceFilter("pending")}
-                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
-                          attendanceFilter === "pending"
-                            ? "bg-amber-400 text-slate-950 shadow"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${attendanceFilter === "pending"
+                          ? "bg-amber-400 text-slate-950 shadow"
+                          : "text-muted-foreground hover:text-foreground"
+                          }`}
                       >
                         Pending ({r1Teams.filter((t) => t.attendanceStatus !== "checked_in").length})
                       </button>
@@ -1387,9 +1397,8 @@ function JudgePortalPage() {
                             return (
                               <tr
                                 key={t.id}
-                                className={`transition-colors hover:bg-muted/40 ${
-                                  isPresent ? "bg-emerald-500/[0.03]" : ""
-                                }`}
+                                className={`transition-colors hover:bg-muted/40 ${isPresent ? "bg-emerald-500/[0.03]" : ""
+                                  }`}
                               >
                                 <td className="p-3">
                                   <div className="font-mono text-cyan font-semibold text-[11px]">{t.teamId}</div>

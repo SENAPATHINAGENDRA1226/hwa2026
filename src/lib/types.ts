@@ -1,7 +1,7 @@
 export type AcademicYear = "1st Year" | "2nd Year" | "3rd Year" | "4th Year";
 
 export type PaymentStatus = "pending" | "verified" | "rejected";
-export type AttendanceStatus = "registered" | "checked_in";
+export type AttendanceStatus = "registered" | "checked_in" | "pending";
 
 export interface TeamMember {
   name: string;

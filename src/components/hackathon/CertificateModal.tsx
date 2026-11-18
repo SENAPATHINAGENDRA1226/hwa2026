@@ -252,6 +252,7 @@ export function CertificateModal({
     try {
       for (let i = 0; i < allTeamCertificates.length; i++) {
         const cert = allTeamCertificates[i];
+        if (!cert) continue;
         const canvas = await generateCanvas(cert, template);
         const link = document.createElement("a");
         const safeName = cert.recipientName.replace(/\s+/g, "_");
@@ -342,11 +343,10 @@ export function CertificateModal({
                   <button
                     key={c.id}
                     onClick={() => switchParticipant(c)}
-                    className={`shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 border ${
-                      isCurrent
+                    className={`shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 border ${isCurrent
                         ? "bg-cyan/20 border-cyan text-cyan shadow-[0_0_10px_rgba(0,229,255,0.25)]"
                         : "bg-muted/40 border-border text-muted-foreground hover:border-cyan/40 hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     {isCurrent && <Check className="h-3 w-3 text-cyan" />}
                     <span>{c.recipientName}</span>
@@ -358,7 +358,7 @@ export function CertificateModal({
         )}
 
         {/* Certificate Display Area (Scrollable & Responsive) */}
-        <div className="flex-1 overflow-y-auto overflow-x-auto p-3 sm:p-6 bg-zinc-950 flex flex-col items-center justify-start min-h-[300px]">
+        <div className="flex-1 overflow-y-auto overflow-x-auto p-3 sm:p-6 bg-zinc-950 flex flex-col items-center justify-start min-h-75">
           {template?.imageUrl ? (
             /* Custom Uploaded Template View */
             <div

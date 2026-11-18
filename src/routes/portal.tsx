@@ -547,7 +547,7 @@ function StudentPortal() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => setActiveCert(teamCerts[0])}
+                    onClick={() => setActiveCert(teamCerts[0] ?? null)}
                     className="h-8 text-xs gap-1.5 border-cyan/40 text-cyan hover:bg-cyan/10"
                   >
                     <Users className="h-3.5 w-3.5" /> View All Team Certificates
