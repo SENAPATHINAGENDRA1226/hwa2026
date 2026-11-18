@@ -11,9 +11,11 @@ import {
   CreditCard,
   AlertCircle,
   FileText,
+  Download,
 } from "lucide-react";
 import { toast } from "sonner";
 import { db } from "@/lib/db";
+import { downloadTeamQrPass } from "@/lib/download-pass";
 import { THEMES, EVENT } from "@/lib/event-content";
 import { AcademicYear, Team } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -152,7 +154,7 @@ function RegisterPage() {
               </div>
 
               {/* QR Preview */}
-              <div className="pt-4 border-t border-border flex flex-col items-center text-center">
+              <div className="pt-4 border-t border-border flex flex-col items-center text-center space-y-3">
                 <div className="p-2 bg-white rounded-lg border border-border">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(
@@ -162,20 +164,36 @@ function RegisterPage() {
                     className="h-24 w-24"
                   />
                 </div>
-                <span className="font-mono text-xs text-muted-foreground mt-2">
+                <span className="font-mono text-xs text-muted-foreground">
                   Official Check-In QR Pass (Preserved in Student Portal)
                 </span>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => downloadTeamQrPass(registeredTeam)}
+                  className="gap-2 text-xs border-cyan/40 text-cyan hover:bg-cyan/10"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download QR Attendance Pass
+                </Button>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+              <Button
+                type="button"
+                onClick={() => downloadTeamQrPass(registeredTeam)}
+                className="w-full sm:w-auto bg-cyan hover:bg-cyan/90 text-slate-950 font-bold gap-2"
+              >
+                <Download className="h-4 w-4" /> Download QR Pass
+              </Button>
               <a href={`/portal?teamId=${registeredTeam.teamId}`}>
-                <Button className="w-full sm:w-auto bg-cyan hover:bg-cyan/90 text-slate-950 font-semibold gap-2">
+                <Button variant="outline" className="w-full sm:w-auto gap-2">
                   Open Student Portal <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
               <Link to="/">
-                <Button variant="outline" className="w-full sm:w-auto">
+                <Button variant="ghost" className="w-full sm:w-auto">
                   Back to Main Arena
                 </Button>
               </Link>

@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { db } from "@/lib/db";
 import { Team, CertificateRecord, FinalPosition } from "@/lib/types";
 import { CertificateModal } from "@/components/hackathon/CertificateModal";
+import { downloadTeamQrPass } from "@/lib/download-pass";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -232,7 +233,7 @@ function StudentPortal() {
                 </div>
 
                 {/* Digital QR Attendance Pass */}
-                <div className="flex items-center gap-4 bg-background/80 border border-border p-4 rounded-2xl self-start md:self-auto shadow-md">
+                <div className="flex flex-col sm:flex-row items-center gap-4 bg-background/80 border border-border p-4 rounded-2xl self-start md:self-auto shadow-md">
                   <div className="p-1.5 bg-white rounded-xl border border-border">
                     <img
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(
@@ -242,12 +243,12 @@ function StudentPortal() {
                       className="h-16 w-16"
                     />
                   </div>
-                  <div className="text-left text-xs font-mono">
+                  <div className="text-left text-xs font-mono space-y-1">
                     <div className="font-bold text-foreground flex items-center gap-1.5">
                       <QrCode className="h-4 w-4 text-cyan" />
                       OFFICIAL QR PASS
                     </div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                    <div className="text-[11px] text-muted-foreground">
                       Entry:{" "}
                       <span
                         className={
@@ -259,7 +260,15 @@ function StudentPortal() {
                         {selectedTeam.attendanceStatus === "checked_in" ? "CHECKED IN" : "PENDING"}
                       </span>
                     </div>
-                    <div className="text-[10px] text-muted-foreground mt-1">Show at venue desk</div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => downloadTeamQrPass(selectedTeam)}
+                      className="h-7 text-[10px] gap-1 px-2 border-cyan/40 text-cyan hover:bg-cyan/10"
+                    >
+                      <Download className="h-3 w-3" /> Download Pass
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -559,11 +568,10 @@ function StudentPortal() {
                         </span>
                         <Button
                           size="sm"
-                          variant="outline"
                           onClick={() => setActiveCert(cert)}
-                          className="h-8 text-xs gap-1.5 border-cyan/40 hover:bg-cyan/10 hover:text-cyan"
+                          className="h-8 text-xs gap-1.5 bg-cyan text-slate-950 font-bold hover:bg-cyan/90"
                         >
-                          <Download className="h-3.5 w-3.5" /> View / Print
+                          <Download className="h-3.5 w-3.5" /> View & Download
                         </Button>
                       </div>
                     </div>

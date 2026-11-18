@@ -107,6 +107,19 @@ export type CertificateCategory =
   | "third_place"
   | "round_2_participation";
 
+export interface CertificateTemplate {
+  imageUrl: string;
+  nameYPercent: number; // e.g. 48%
+  teamYPercent: number; // e.g. 56%
+  fontSize: number; // e.g. 40
+  fontColor: string; // e.g. "#ffffff"
+  showTeamName: boolean;
+  showCertId: boolean;
+  certIdYPercent: number; // e.g. 88%
+  updatedAt: string;
+  updatedBy: string;
+}
+
 export interface CertificateRecord {
   id: string;
   certificateId: string; // e.g. HWA-CERT-XXXXX

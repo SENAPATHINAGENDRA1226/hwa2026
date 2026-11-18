@@ -6,6 +6,7 @@ import {
   FinalResult,
   ResultPublication,
   CertificateRecord,
+  CertificateTemplate,
   AuditLog,
   CertificateCategory,
   PaymentStatus,
@@ -477,6 +478,28 @@ class HwaDatabase {
     return this.getCertificateRecords().find(
       (c) => c.certificateId.toLowerCase() === certId.toLowerCase(),
     );
+  }
+
+  getCertificateTemplate(): CertificateTemplate | null {
+    return getItem<CertificateTemplate | null>("certificate_template", null);
+  }
+
+  saveCertificateTemplate(template: CertificateTemplate) {
+    setItem("certificate_template", template);
+    this.addAuditLog("CERTIFICATE_TEMPLATE_SAVED", template.updatedBy, {
+      updatedAt: template.updatedAt,
+      nameYPercent: template.nameYPercent,
+    });
+  }
+
+  clearCertificateTemplate() {
+    if (isBrowser()) {
+      try {
+        localStorage.removeItem(STORAGE_KEY_PREFIX + "certificate_template");
+      } catch {}
+    }
+    delete inMemoryStore[STORAGE_KEY_PREFIX + "certificate_template"];
+    this.addAuditLog("CERTIFICATE_TEMPLATE_CLEARED", "Super Admin", {});
   }
 
   private issueCategoryACertificates(adminName: string) {

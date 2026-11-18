@@ -323,21 +323,6 @@ function AdminCommandCenter() {
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/portal">
-              <Button size="sm" variant="ghost" className="text-xs">
-                Student Portal
-              </Button>
-            </Link>
-            <Link to="/judge">
-              <Button size="sm" variant="ghost" className="text-xs">
-                Judge Portal
-              </Button>
-            </Link>
-            <Link to="/results">
-              <Button size="sm" variant="ghost" className="text-xs text-cyan">
-                Public Results
-              </Button>
-            </Link>
             <Button
               size="sm"
               variant="destructive"
@@ -510,8 +495,8 @@ function AdminCommandCenter() {
               <button
                 onClick={() => setPaymentFilter("all")}
                 className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "all"
-                    ? "border-cyan bg-cyan/15 text-cyan"
-                    : "border-border text-muted-foreground hover:bg-muted"
+                  ? "border-cyan bg-cyan/15 text-cyan"
+                  : "border-border text-muted-foreground hover:bg-muted"
                   }`}
               >
                 All Teams ({teams.length})
@@ -519,8 +504,8 @@ function AdminCommandCenter() {
               <button
                 onClick={() => setPaymentFilter("pending")}
                 className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "pending"
-                    ? "border-amber-400 bg-amber-400/15 text-amber-300 font-bold"
-                    : "border-border text-muted-foreground hover:bg-muted"
+                  ? "border-amber-400 bg-amber-400/15 text-amber-300 font-bold"
+                  : "border-border text-muted-foreground hover:bg-muted"
                   }`}
               >
                 Pending Approval ({teams.filter((t) => t.paymentStatus === "pending").length})
@@ -528,8 +513,8 @@ function AdminCommandCenter() {
               <button
                 onClick={() => setPaymentFilter("verified")}
                 className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "verified"
-                    ? "border-emerald-500 bg-emerald-500/15 text-emerald-400"
-                    : "border-border text-muted-foreground hover:bg-muted"
+                  ? "border-emerald-500 bg-emerald-500/15 text-emerald-400"
+                  : "border-border text-muted-foreground hover:bg-muted"
                   }`}
               >
                 Verified / Confirmed ({teams.filter((t) => t.paymentStatus === "verified").length})
@@ -537,8 +522,8 @@ function AdminCommandCenter() {
               <button
                 onClick={() => setPaymentFilter("rejected")}
                 className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${paymentFilter === "rejected"
-                    ? "border-rose-500 bg-rose-500/15 text-rose-400"
-                    : "border-border text-muted-foreground hover:bg-muted"
+                  ? "border-rose-500 bg-rose-500/15 text-rose-400"
+                  : "border-border text-muted-foreground hover:bg-muted"
                   }`}
               >
                 Rejected ({teams.filter((t) => t.paymentStatus === "rejected").length})
@@ -595,10 +580,10 @@ function AdminCommandCenter() {
                             <Badge
                               variant="outline"
                               className={`text-xs ${t.paymentStatus === "verified"
-                                  ? "border-emerald-500 text-emerald-400 bg-emerald-500/10 font-bold"
-                                  : t.paymentStatus === "rejected"
-                                    ? "border-rose-500 text-rose-400 bg-rose-500/10"
-                                    : "border-amber-400 text-amber-300 bg-amber-400/10 font-bold"
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-500/10 font-bold"
+                                : t.paymentStatus === "rejected"
+                                  ? "border-rose-500 text-rose-400 bg-rose-500/10"
+                                  : "border-amber-400 text-amber-300 bg-amber-400/10 font-bold"
                                 }`}
                             >
                               {t.paymentStatus === "verified"
@@ -774,8 +759,8 @@ function AdminCommandCenter() {
                   key={mode}
                   onClick={() => setR1Filter(mode)}
                   className={`text-xs px-3 py-1 rounded-md border font-medium transition-colors ${r1Filter === mode
-                      ? "border-cyan bg-cyan/15 text-cyan"
-                      : "border-border text-muted-foreground hover:bg-muted"
+                    ? "border-cyan bg-cyan/15 text-cyan"
+                    : "border-border text-muted-foreground hover:bg-muted"
                     }`}
                 >
                   {mode === "all"
@@ -842,10 +827,10 @@ function AdminCommandCenter() {
                               <Badge
                                 variant="outline"
                                 className={`text-xs ${isSelected
-                                    ? "border-emerald-500 text-emerald-400 bg-emerald-500/10"
-                                    : isNotSelected
-                                      ? "border-rose-500/50 text-rose-400 bg-rose-500/10"
-                                      : "border-amber-500 text-amber-400 bg-amber-500/10"
+                                  ? "border-emerald-500 text-emerald-400 bg-emerald-500/10"
+                                  : isNotSelected
+                                    ? "border-rose-500/50 text-rose-400 bg-rose-500/10"
+                                    : "border-amber-500 text-amber-400 bg-amber-500/10"
                                   }`}
                               >
                                 {isSelected
@@ -863,8 +848,8 @@ function AdminCommandCenter() {
                                     variant={isSelected ? "default" : "outline"}
                                     onClick={() => handleToggleSelection(t.teamId, sel?.status)}
                                     className={`h-7 text-xs ${isSelected
-                                        ? "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold"
-                                        : "border-border hover:border-emerald-500"
+                                      ? "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold"
+                                      : "border-border hover:border-emerald-500"
                                       }`}
                                   >
                                     {isSelected ? "Selected ✓" : "Promote"}
@@ -877,8 +862,8 @@ function AdminCommandCenter() {
                                       refreshAll();
                                     }}
                                     className={`h-7 text-xs ${isNotSelected
-                                        ? "border-rose-500 text-rose-400 bg-rose-500/10"
-                                        : "border-border text-muted-foreground"
+                                      ? "border-rose-500 text-rose-400 bg-rose-500/10"
+                                      : "border-border text-muted-foreground"
                                       }`}
                                   >
                                     Exclude
