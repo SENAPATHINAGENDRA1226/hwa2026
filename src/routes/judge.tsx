@@ -1107,7 +1107,8 @@ function JudgePortalPage() {
                 <div className="text-2xl font-black font-display text-foreground mt-1">{r1Teams.length}</div>
                 <span className="text-[11px] text-muted-foreground">Registered squads</span>
               </div>
-              <div className="bg-card border border-emerald-500/30 bg-emerald-500/5 rounded-xl p-4">
+              <div className="bg-cardrrrr
+               border border-emerald-500/30 rounded-xl p-4">
                 <span className="text-xs text-emerald-400 font-mono">Checked In (Present)</span>
                 <div className="text-2xl font-black font-display text-emerald-400 mt-1">
                   {r1Teams.filter((t) => t.attendanceStatus === "checked_in").length}
@@ -1119,7 +1120,7 @@ function JudgePortalPage() {
                   % Turnout
                 </span>
               </div>
-              <div className="bg-card border border-amber-500/30 bg-amber-500/5 rounded-xl p-4">
+              <div className="border border-amber-500/30 bg-amber-500/5 rounded-xl p-4">
                 <span className="text-xs text-amber-300 font-mono">Pending Check-in</span>
                 <div className="text-2xl font-black font-display text-amber-300 mt-1">
                   {r1Teams.filter((t) => t.attendanceStatus !== "checked_in").length}
@@ -1175,7 +1176,7 @@ function JudgePortalPage() {
                         <p className="font-display font-semibold text-sm text-foreground">
                           Camera Scanner Is In Standby
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1 max-w-[240px]">
+                        <p className="text-xs text-muted-foreground mt-1 max-w-60">
                           Click below to start your device camera and scan student attendance passes.
                         </p>
                         <Button
@@ -1374,7 +1375,7 @@ function JudgePortalPage() {
                   </div>
 
                   {/* Team List Table */}
-                  <div className="border border-border rounded-xl overflow-hidden max-h-[480px] overflow-y-auto">
+                  <div className="border border-border rounded-xl overflow-hidden max-h-120 overflow-y-auto">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-muted/60 text-muted-foreground font-mono uppercase text-[10px] sticky top-0 z-10 backdrop-blur">
                         <tr>
@@ -1397,7 +1398,7 @@ function JudgePortalPage() {
                             return (
                               <tr
                                 key={t.id}
-                                className={`transition-colors hover:bg-muted/40 ${isPresent ? "bg-emerald-500/[0.03]" : ""
+                                className={`transition-colors hover:bg-muted/40 ${isPresent ? "bg-emerald-500/3" : ""
                                   }`}
                               >
                                 <td className="p-3">
