@@ -6,12 +6,12 @@ import { SectionHeading } from "./SectionHeading";
 const DETAILS = [
   { icon: CalendarDays, label: "Date", value: EVENT.dateLabel },
   { icon: MapPin, label: "Venue", value: EVENT.venue },
-  { icon: Clock, label: "Duration", value: `${EVENT.duration} · 2 Days` },
+  { icon: Clock, label: "Duration", value: EVENT.duration },
   { icon: Users, label: "Team Size", value: EVENT.teamSize },
 ];
 
 const PILLARS = [
-  { k: "01", t: "Build", d: "Turn a bold idea into a working prototype in 24 hours." },
+  { k: "01", t: "Build", d: "Turn a bold idea into a working prototype in 2 days." },
   { k: "02", t: "Learn", d: "Mentors, tech talks and hands-on help through the night." },
   { k: "03", t: "Connect", d: "Meet builders, mentors and recruiters from across the region." },
 ];

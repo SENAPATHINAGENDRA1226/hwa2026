@@ -60,9 +60,10 @@ describe("HWA 2026 — Two-Round Hackathon Management System", () => {
       judgeId: "JURY-01",
       criteria: {
         innovation: 24,
-        techComplexity: 22,
-        feasibility: 23,
-        presentation: 25,
+        problemUnderstanding: 19,
+        technicalFeasibility: 19,
+        practicalImplementation: 18,
+        presentation: 14,
       },
       feedback: "Excellent architecture and well-articulated demo.",
       isSubmitted: true,
@@ -83,7 +84,13 @@ describe("HWA 2026 — Two-Round Hackathon Management System", () => {
       teamId: team1,
       judgeName: "Judge A",
       judgeId: "J1",
-      criteria: { innovation: 20, techComplexity: 20, feasibility: 20, presentation: 20 },
+      criteria: {
+        innovation: 20,
+        problemUnderstanding: 16,
+        technicalFeasibility: 16,
+        practicalImplementation: 16,
+        presentation: 12,
+      },
       feedback: "Good",
       isSubmitted: true,
     });
@@ -117,7 +124,13 @@ describe("HWA 2026 — Two-Round Hackathon Management System", () => {
         teamId: unselectedTeamId,
         judgeName: "Grand Jury",
         judgeId: "GJ1",
-        criteria: { implementation: 25, aiArchitecture: 25, viability: 18, qnaDefense: 18 },
+        criteria: {
+          innovation: 20,
+          problemUnderstanding: 16,
+          technicalFeasibility: 16,
+          practicalImplementation: 16,
+          presentation: 12,
+        },
         feedback: "Attempt",
         isSubmitted: true,
       });
@@ -139,7 +152,13 @@ describe("HWA 2026 — Two-Round Hackathon Management System", () => {
       teamId: team1,
       judgeName: "Jury",
       judgeId: "J1",
-      criteria: { implementation: 30, aiArchitecture: 28, viability: 19, qnaDefense: 19 },
+      criteria: {
+        innovation: 25,
+        problemUnderstanding: 20,
+        technicalFeasibility: 20,
+        practicalImplementation: 19,
+        presentation: 15,
+      },
       feedback: "Exceptional Winner",
       isSubmitted: true,
     });
@@ -147,7 +166,13 @@ describe("HWA 2026 — Two-Round Hackathon Management System", () => {
       teamId: team2,
       judgeName: "Jury",
       judgeId: "J1",
-      criteria: { implementation: 26, aiArchitecture: 25, viability: 18, qnaDefense: 18 },
+      criteria: {
+        innovation: 22,
+        problemUnderstanding: 18,
+        technicalFeasibility: 17,
+        practicalImplementation: 17,
+        presentation: 13,
+      },
       feedback: "Strong Runner-up",
       isSubmitted: true,
     });

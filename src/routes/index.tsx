@@ -15,9 +15,9 @@ import { Rules } from "@/components/hackathon/Rules";
 import { ProblemStatements } from "@/components/hackathon/Themes";
 import { Timeline } from "@/components/hackathon/Timeline";
 
-const TITLE = "HACK WITH AVANTHI 2026 — 24-Hour AI Hackathon by DLIDES CLUB";
+const TITLE = "HACK WITH AVANTHI 2026 — 2-Day AI Hackathon by DLIDES CLUB";
 const DESCRIPTION =
-  "Where Intelligence Meets Innovation. A 24-hour technical hackathon at Avanthi Institute of Engineering & Technology (21 – 22 Dec 2026) for 2nd and 3rd year CSM & CSD students. ₹20,000 prize pool.";
+  "Where Intelligence Meets Innovation. A 2-day technical hackathon at Avanthi Institute of Engineering & Technology (21 – 22 Dec 2026) for 2nd and 3rd year CSM & CSD students. ₹20,000 prize pool.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

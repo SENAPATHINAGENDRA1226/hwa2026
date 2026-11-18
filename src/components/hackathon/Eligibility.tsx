@@ -58,7 +58,6 @@ export function Eligibility() {
                   <span className="font-mono text-xs font-bold text-violet">CSD</span>
                   <span>Data Science</span>
                 </div>
-                <p className="text-xs text-muted-foreground/80 pt-1">Cross-department mixed teams allowed.</p>
               </div>
             </div>
           </Reveal>

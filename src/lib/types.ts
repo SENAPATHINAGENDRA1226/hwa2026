@@ -26,10 +26,11 @@ export interface Team {
 }
 
 export interface EvaluationCriteria {
-  innovation: number; // 0-25
-  techComplexity: number; // 0-25
-  feasibility: number; // 0-25
-  presentation: number; // 0-25
+  innovation: number; // 0-25 (Innovation & Creativity: 25%)
+  problemUnderstanding: number; // 0-20 (Problem Understanding: 20%)
+  technicalFeasibility: number; // 0-20 (Technical Feasibility: 20%)
+  practicalImplementation: number; // 0-20 (Practical Implementation: 20%)
+  presentation: number; // 0-15 (Presentation & Communication: 15%)
 }
 
 export interface Round1Evaluation {
@@ -55,12 +56,7 @@ export interface Round1Selection {
   selectedBy?: string | undefined;
 }
 
-export interface Round2EvaluationCriteria {
-  implementation: number; // 0-30
-  aiArchitecture: number; // 0-30
-  viability: number; // 0-20
-  qnaDefense: number; // 0-20
-}
+export type Round2EvaluationCriteria = EvaluationCriteria;
 
 export interface Round2Evaluation {
   id: string;

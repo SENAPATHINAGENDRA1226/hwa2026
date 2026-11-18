@@ -4,10 +4,10 @@ import { RegisterButton } from "./RegisterButton";
 import { Reveal } from "./Reveal";
 
 const STEPS = [
-  "Form a team of 2 – 4 members",
+  "Form a team of 1 – 4 participants",
   "Register your team online",
-  "Pick your theme and get shortlisted",
-  "Show up and hack for 24 hours",
+  "Pick your theme and submit your PPT",
+  "Show up and hack for 2 days",
 ];
 
 export function Register() {
@@ -26,7 +26,7 @@ export function Register() {
                 Ready to <span className="text-neon">plug in?</span>
               </h2>
               <p className="relative mx-auto mt-5 max-w-xl text-muted-foreground">
-                Seats are limited. Lock in your team’s spot at {EVENT.name} and join the most intelligent 24 hours on
+                Seats are limited. Lock in your team’s spot at {EVENT.name} and join the most intelligent 2 days on
                 campus.
               </p>
 

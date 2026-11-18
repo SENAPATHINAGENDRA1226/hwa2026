@@ -5,10 +5,10 @@ import {
   Clock,
   Download,
   FileCheck,
-  Medal,
   ScrollText,
   ShieldCheck,
   Sparkles,
+  Trophy,
   Zap,
 } from "lucide-react";
 import { PARTICIPATION_BENEFITS } from "@/lib/event-content";
@@ -79,7 +79,7 @@ export function ParticipationBenefits() {
               <div>
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet/40 bg-violet/10 text-violet">
-                    <Medal className="h-6 w-6" />
+                    <Trophy className="h-6 w-6" />
                   </div>
                   <span className="font-mono text-xs uppercase tracking-widest text-violet rounded-full border border-violet/30 bg-violet/10 px-3 py-1">
                     Round 2 Finalists
@@ -108,7 +108,7 @@ export function ParticipationBenefits() {
 
               <div className="mt-6 border-t border-border/60 pt-4 flex items-center justify-between text-xs font-mono text-muted-foreground">
                 <span>Certification:</span>
-                <span className="text-violet font-bold">Digital Excellence + Physical Trophy/Plaque</span>
+                <span className="text-violet font-bold">Digital Excellence + Physical Certificate</span>
               </div>
             </div>
           </Reveal>

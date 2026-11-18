@@ -92,7 +92,7 @@ export function Timeline() {
         <div className="tl-track relative mt-20">
           {/* Base track + Glowing progress line */}
           <div className="absolute bottom-0 left-4 top-0 w-px bg-border md:left-1/2 md:-translate-x-1/2" />
-          <div className="tl-progress absolute bottom-0 left-4 top-0 w-0.5 origin-top translate-x-[-0.5px] bg-gradient-to-b from-cyan via-violet to-emerald-400 shadow-[0_0_12px_rgba(0,240,255,0.6)] md:left-1/2 md:-translate-x-1/2" />
+          <div className="tl-progress absolute bottom-0 left-4 top-0 w-0.5 origin-top translate-x-[-0.5px] bg-linear-to-b from-cyan via-violet to-emerald-400 shadow-[0_0_12px_rgba(0,240,255,0.6)] md:left-1/2 md:-translate-x-1/2" />
 
           <ol className="space-y-12 md:space-y-10">
             {TIMELINE.map((m, i) => {

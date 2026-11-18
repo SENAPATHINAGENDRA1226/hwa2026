@@ -10,7 +10,7 @@ export const EVENT = {
   startsAt: "2026-12-21T09:00:00+05:30",
   dateLabel: "21 – 22 Dec 2026",
   venue: "Avanthi Institute of Engineering and Technology, Vizianagaram",
-  duration: "24 Hours",
+  duration: "2 Days",
   teamSize: "1 – 4 Participants",
   fee: "₹250 per team",
   registerUrl: "/register",
@@ -99,7 +99,7 @@ export const TIMELINE: TimelineMilestone[] = [
     stage: "Stage 05",
     date: "21 December 2026",
     title: "Day 1 – Hackathon Begins",
-    detail: "Keynote, theme kick-off, 24-hour hacking countdown starts, and Mentor Round 1 commences.",
+    detail: "Keynote, theme kick-off, hacking countdown starts, and Mentor Round 1 commences.",
     badge: "Hackathon",
     isKeyDeadline: true,
   },
@@ -120,7 +120,7 @@ export const ELIGIBILITY_DATA = {
     { code: "CSD", name: "Computer Science and Engineering (Data Science)" },
   ],
   years: ["2nd Year", "3rd Year"],
-  teamSize: "Minimum: 1 participant · Maximum: 4 participants. Individual participation is allowed. CSM and CSD students can form mixed teams.",
+  teamSize: "Minimum: 1 participant · Maximum: 4 participants. Individual participation is allowed.",
   fee: "₹250 per team (remains the same regardless of the number of team members).",
   pptSubmission: [
     "Problem Understanding",
@@ -189,48 +189,20 @@ export const JUDGING_CRITERIA = [
 
 export const PRIZE_POOL = {
   total: 20000,
-  categories: [
+  prizes: [
     {
-      year: "2nd Year Category",
-      description: "Dedicated competition tier for 2nd Year CSM & CSD innovators",
-      totalCategory: 10000,
-      prizes: [
-        {
-          rank: "Winner",
-          amount: 7000,
-          tone: "cyan",
-          title: "2nd Year Winner",
-          perks: ["₹7,000 Cash Prize", "Winner Trophy & Medals", "Certificate of Excellence"],
-        },
-        {
-          rank: "Runner-up",
-          amount: 3000,
-          tone: "violet",
-          title: "2nd Year Runner-up",
-          perks: ["₹3,000 Cash Prize", "Runner-up Medals", "Certificate of Excellence"],
-        },
-      ],
+      rank: "Winner",
+      title: "Grand Winner",
+      amount: 7000,
+      tone: "cyan" as const,
+      perks: ["₹7,000 Cash Prize", "Winner Trophy", "Certificate of Excellence", "Grand Felicitation"],
     },
     {
-      year: "3rd Year Category",
-      description: "Dedicated competition tier for 3rd Year CSM & CSD innovators",
-      totalCategory: 10000,
-      prizes: [
-        {
-          rank: "Winner",
-          amount: 7000,
-          tone: "cyan",
-          title: "3rd Year Winner",
-          perks: ["₹7,000 Cash Prize", "Winner Trophy & Medals", "Certificate of Excellence"],
-        },
-        {
-          rank: "Runner-up",
-          amount: 3000,
-          tone: "violet",
-          title: "3rd Year Runner-up",
-          perks: ["₹3,000 Cash Prize", "Runner-up Medals", "Certificate of Excellence"],
-        },
-      ],
+      rank: "Runner-up",
+      title: "Runner-up",
+      amount: 3000,
+      tone: "violet" as const,
+      perks: ["₹3,000 Cash Prize", "Runner-up Trophy", "Certificate of Excellence", "Grand Felicitation"],
     },
   ],
 };
@@ -286,7 +258,7 @@ export const FAQS = [
   },
   {
     q: "Can CSM and CSD students form a team?",
-    a: "Yes. Students from both eligible departments can form a mixed team.",
+    a: "Yes. Students from both eligible departments can form a team.",
   },
   {
     q: "Will all participants receive certificates?",
@@ -348,5 +320,4 @@ export const COORDINATORS = {
 export const VENUE = {
   name: "Avanthi Institute of Engineering and Technology",
   location: "Vizianagaram, Andhra Pradesh, India",
-  mapsUrl: "https://maps.google.com/?q=Avanthi+Institute+of+Engineering+and+Technology+Vizianagaram",
 };

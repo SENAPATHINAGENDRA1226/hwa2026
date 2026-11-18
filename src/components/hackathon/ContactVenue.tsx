@@ -1,11 +1,8 @@
 import {
-  ExternalLink,
   GraduationCap,
   MapPin,
   MessageCircle,
-  Navigation,
   Phone,
-  UserCheck,
   Users,
 } from "lucide-react";
 import { COORDINATORS, VENUE } from "@/lib/event-content";
@@ -125,31 +122,16 @@ export function ContactVenue() {
         <Reveal delay={0.2} className="mt-12">
           <div className="glass relative overflow-hidden rounded-3xl border border-cyan/40 p-8 sm:p-10">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-neon" />
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-cyan/40 bg-cyan/10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-cyan">
-                  <MapPin className="h-3.5 w-3.5" /> Event Location
-                </div>
-                <h3 className="font-display text-2xl sm:text-3xl font-black text-foreground">
-                  {VENUE.name}
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground flex items-center gap-2">
-                  <span>{VENUE.location}</span>
-                </p>
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-cyan/40 bg-cyan/10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-cyan">
+                <MapPin className="h-3.5 w-3.5" /> Event Venue
               </div>
-
-              <div className="shrink-0 flex flex-wrap gap-3">
-                <a
-                  href={VENUE.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-cyan px-6 py-3.5 font-display text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-950 transition-all hover:bg-cyan/90 hover:scale-[1.02] shadow-[0_0_20px_rgba(0,240,255,0.4)]"
-                >
-                  <Navigation className="h-4 w-4" />
-                  <span>Navigate with Google Maps</span>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </a>
-              </div>
+              <h3 className="font-display text-2xl sm:text-3xl font-black text-foreground">
+                {VENUE.name}
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                {VENUE.location}
+              </p>
             </div>
           </div>
         </Reveal>

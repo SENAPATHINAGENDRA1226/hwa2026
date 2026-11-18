@@ -50,19 +50,21 @@ function JudgePortalPage() {
   const [r1Teams, setR1Teams] = useState<Team[]>([]);
   const [r1SelectedTeamId, setR1SelectedTeamId] = useState<string>("");
   const [r1Innovation, setR1Innovation] = useState<number>(20);
-  const [r1Complexity, setR1Complexity] = useState<number>(20);
-  const [r1Feasibility, setR1Feasibility] = useState<number>(20);
-  const [r1Presentation, setR1Presentation] = useState<number>(20);
+  const [r1Problem, setR1Problem] = useState<number>(16);
+  const [r1Feasibility, setR1Feasibility] = useState<number>(16);
+  const [r1Implementation, setR1Implementation] = useState<number>(16);
+  const [r1Presentation, setR1Presentation] = useState<number>(12);
   const [r1Feedback, setR1Feedback] = useState<string>("");
   const [r1Evaluations, setR1Evaluations] = useState<Round1Evaluation[]>([]);
 
   // Round 2 State
   const [r2EligibleTeams, setR2EligibleTeams] = useState<Team[]>([]);
   const [r2SelectedTeamId, setR2SelectedTeamId] = useState<string>("");
-  const [r2Implementation, setR2Implementation] = useState<number>(25);
-  const [r2Architecture, setR2Architecture] = useState<number>(25);
-  const [r2Viability, setR2Viability] = useState<number>(18);
-  const [r2Qna, setR2Qna] = useState<number>(18);
+  const [r2Innovation, setR2Innovation] = useState<number>(20);
+  const [r2Problem, setR2Problem] = useState<number>(16);
+  const [r2Feasibility, setR2Feasibility] = useState<number>(16);
+  const [r2Implementation, setR2Implementation] = useState<number>(16);
+  const [r2Presentation, setR2Presentation] = useState<number>(12);
   const [r2Feedback, setR2Feedback] = useState<string>("");
   const [r2Evaluations, setR2Evaluations] = useState<Round2Evaluation[]>([]);
 
@@ -156,15 +158,17 @@ function JudgePortalPage() {
     const existing = db.getRound1EvaluationForTeam(teamId);
     if (existing) {
       setR1Innovation(existing.criteria.innovation);
-      setR1Complexity(existing.criteria.techComplexity);
-      setR1Feasibility(existing.criteria.feasibility);
+      setR1Problem(existing.criteria.problemUnderstanding);
+      setR1Feasibility(existing.criteria.technicalFeasibility);
+      setR1Implementation(existing.criteria.practicalImplementation);
       setR1Presentation(existing.criteria.presentation);
       setR1Feedback(existing.feedback || "");
     } else {
       setR1Innovation(20);
-      setR1Complexity(20);
-      setR1Feasibility(20);
-      setR1Presentation(20);
+      setR1Problem(16);
+      setR1Feasibility(16);
+      setR1Implementation(16);
+      setR1Presentation(12);
       setR1Feedback("");
     }
   };
@@ -172,16 +176,18 @@ function JudgePortalPage() {
   const loadR2TeamEval = (teamId: string) => {
     const existing = db.getRound2EvaluationForTeam(teamId);
     if (existing) {
-      setR2Implementation(existing.criteria.implementation);
-      setR2Architecture(existing.criteria.aiArchitecture);
-      setR2Viability(existing.criteria.viability);
-      setR2Qna(existing.criteria.qnaDefense);
+      setR2Innovation(existing.criteria.innovation);
+      setR2Problem(existing.criteria.problemUnderstanding);
+      setR2Feasibility(existing.criteria.technicalFeasibility);
+      setR2Implementation(existing.criteria.practicalImplementation);
+      setR2Presentation(existing.criteria.presentation);
       setR2Feedback(existing.feedback || "");
     } else {
-      setR2Implementation(25);
-      setR2Architecture(25);
-      setR2Viability(18);
-      setR2Qna(18);
+      setR2Innovation(20);
+      setR2Problem(16);
+      setR2Feasibility(16);
+      setR2Implementation(16);
+      setR2Presentation(12);
       setR2Feedback("");
     }
   };
@@ -199,8 +205,9 @@ function JudgePortalPage() {
         judgeId,
         criteria: {
           innovation: Number(r1Innovation),
-          techComplexity: Number(r1Complexity),
-          feasibility: Number(r1Feasibility),
+          problemUnderstanding: Number(r1Problem),
+          technicalFeasibility: Number(r1Feasibility),
+          practicalImplementation: Number(r1Implementation),
           presentation: Number(r1Presentation),
         },
         feedback: r1Feedback.trim(),
@@ -225,10 +232,11 @@ function JudgePortalPage() {
         judgeName,
         judgeId,
         criteria: {
-          implementation: Number(r2Implementation),
-          aiArchitecture: Number(r2Architecture),
-          viability: Number(r2Viability),
-          qnaDefense: Number(r2Qna),
+          innovation: Number(r2Innovation),
+          problemUnderstanding: Number(r2Problem),
+          technicalFeasibility: Number(r2Feasibility),
+          practicalImplementation: Number(r2Implementation),
+          presentation: Number(r2Presentation),
         },
         feedback: r2Feedback.trim(),
         isSubmitted: true,
@@ -243,8 +251,19 @@ function JudgePortalPage() {
   const selectedR1Team = r1Teams.find((t) => t.teamId === r1SelectedTeamId);
   const selectedR2Team = r2EligibleTeams.find((t) => t.teamId === r2SelectedTeamId);
 
-  const r1TotalScore = Number(r1Innovation) + Number(r1Complexity) + Number(r1Feasibility) + Number(r1Presentation);
-  const r2TotalScore = Number(r2Implementation) + Number(r2Architecture) + Number(r2Viability) + Number(r2Qna);
+  const r1TotalScore =
+    Number(r1Innovation) +
+    Number(r1Problem) +
+    Number(r1Feasibility) +
+    Number(r1Implementation) +
+    Number(r1Presentation);
+
+  const r2TotalScore =
+    Number(r2Innovation) +
+    Number(r2Problem) +
+    Number(r2Feasibility) +
+    Number(r2Implementation) +
+    Number(r2Presentation);
 
   const r1AvgScore =
     r1Evaluations.length > 0
@@ -483,14 +502,14 @@ function JudgePortalPage() {
                     </div>
                   )}
 
-                  {/* Rubric Criteria 4 x 25 */}
+                  {/* Rubric Criteria 5 items totaling 100% */}
                   <div className="space-y-4">
-                    <h3 className="font-display font-semibold text-sm">Round 1 Evaluation Criteria (0 – 25 Marks Each)</h3>
+                    <h3 className="font-display font-semibold text-sm">Round 1 Evaluation Criteria (100% Total)</h3>
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs">
-                        <span>1. Innovation & Novelty (0 – 25)</span>
-                        <span className="font-mono font-bold text-cyan">{r1Innovation} pts</span>
+                        <span>1. Innovation & Creativity (25%)</span>
+                        <span className="font-mono font-bold text-cyan">{r1Innovation} / 25 pts</span>
                       </div>
                       <input
                         type="range"
@@ -505,15 +524,15 @@ function JudgePortalPage() {
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs">
-                        <span>2. Technical Complexity & Architecture (0 – 25)</span>
-                        <span className="font-mono font-bold text-cyan">{r1Complexity} pts</span>
+                        <span>2. Problem Understanding (20%)</span>
+                        <span className="font-mono font-bold text-cyan">{r1Problem} / 20 pts</span>
                       </div>
                       <input
                         type="range"
                         min="0"
-                        max="25"
-                        value={r1Complexity}
-                        onChange={(e) => setR1Complexity(Number(e.target.value))}
+                        max="20"
+                        value={r1Problem}
+                        onChange={(e) => setR1Problem(Number(e.target.value))}
                         disabled={r1Pub.isPublished}
                         className="w-full accent-cyan"
                       />
@@ -521,13 +540,13 @@ function JudgePortalPage() {
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs">
-                        <span>3. Feasibility & Practical Impact (0 – 25)</span>
-                        <span className="font-mono font-bold text-cyan">{r1Feasibility} pts</span>
+                        <span>3. Technical Feasibility (20%)</span>
+                        <span className="font-mono font-bold text-cyan">{r1Feasibility} / 20 pts</span>
                       </div>
                       <input
                         type="range"
                         min="0"
-                        max="25"
+                        max="20"
                         value={r1Feasibility}
                         onChange={(e) => setR1Feasibility(Number(e.target.value))}
                         disabled={r1Pub.isPublished}
@@ -537,13 +556,29 @@ function JudgePortalPage() {
 
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs">
-                        <span>4. UI/UX & Presentation Clarity (0 – 25)</span>
-                        <span className="font-mono font-bold text-cyan">{r1Presentation} pts</span>
+                        <span>4. Practical Implementation (20%)</span>
+                        <span className="font-mono font-bold text-cyan">{r1Implementation} / 20 pts</span>
                       </div>
                       <input
                         type="range"
                         min="0"
-                        max="25"
+                        max="20"
+                        value={r1Implementation}
+                        onChange={(e) => setR1Implementation(Number(e.target.value))}
+                        disabled={r1Pub.isPublished}
+                        className="w-full accent-cyan"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span>5. Presentation & Communication (15%)</span>
+                        <span className="font-mono font-bold text-cyan">{r1Presentation} / 15 pts</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max="15"
                         value={r1Presentation}
                         onChange={(e) => setR1Presentation(Number(e.target.value))}
                         disabled={r1Pub.isPublished}
@@ -706,17 +741,65 @@ function JudgePortalPage() {
 
                     {/* Rubric Criteria for Round 2 */}
                     <div className="space-y-4">
-                      <h3 className="font-display font-semibold text-sm">Round 2 Grand Jury Matrix</h3>
+                      <h3 className="font-display font-semibold text-sm">Round 2 Grand Jury Matrix (100% Total)</h3>
 
                       <div className="space-y-2">
                         <div className="flex justify-between text-xs">
-                          <span>1. Working Prototype & Code Execution (0 – 30)</span>
-                          <span className="font-mono font-bold text-violet">{r2Implementation} pts</span>
+                          <span>1. Innovation & Creativity (25%)</span>
+                          <span className="font-mono font-bold text-violet">{r2Innovation} / 25 pts</span>
                         </div>
                         <input
                           type="range"
                           min="0"
-                          max="30"
+                          max="25"
+                          value={r2Innovation}
+                          onChange={(e) => setR2Innovation(Number(e.target.value))}
+                          disabled={finalPub.isPublished}
+                          className="w-full accent-violet"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span>2. Problem Understanding (20%)</span>
+                          <span className="font-mono font-bold text-violet">{r2Problem} / 20 pts</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          value={r2Problem}
+                          onChange={(e) => setR2Problem(Number(e.target.value))}
+                          disabled={finalPub.isPublished}
+                          className="w-full accent-violet"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span>3. Technical Feasibility (20%)</span>
+                          <span className="font-mono font-bold text-violet">{r2Feasibility} / 20 pts</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          value={r2Feasibility}
+                          onChange={(e) => setR2Feasibility(Number(e.target.value))}
+                          disabled={finalPub.isPublished}
+                          className="w-full accent-violet"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span>4. Practical Implementation (20%)</span>
+                          <span className="font-mono font-bold text-violet">{r2Implementation} / 20 pts</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
                           value={r2Implementation}
                           onChange={(e) => setR2Implementation(Number(e.target.value))}
                           disabled={finalPub.isPublished}
@@ -726,47 +809,15 @@ function JudgePortalPage() {
 
                       <div className="space-y-2">
                         <div className="flex justify-between text-xs">
-                          <span>2. Advanced AI Architecture & Depth (0 – 30)</span>
-                          <span className="font-mono font-bold text-violet">{r2Architecture} pts</span>
+                          <span>5. Presentation & Communication (15%)</span>
+                          <span className="font-mono font-bold text-violet">{r2Presentation} / 15 pts</span>
                         </div>
                         <input
                           type="range"
                           min="0"
-                          max="30"
-                          value={r2Architecture}
-                          onChange={(e) => setR2Architecture(Number(e.target.value))}
-                          disabled={finalPub.isPublished}
-                          className="w-full accent-violet"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>3. Business Viability & Scalability (0 – 20)</span>
-                          <span className="font-mono font-bold text-violet">{r2Viability} pts</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          value={r2Viability}
-                          onChange={(e) => setR2Viability(Number(e.target.value))}
-                          disabled={finalPub.isPublished}
-                          className="w-full accent-violet"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>4. Q&A Defense & Live Demonstration (0 – 20)</span>
-                          <span className="font-mono font-bold text-violet">{r2Qna} pts</span>
-                        </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          value={r2Qna}
-                          onChange={(e) => setR2Qna(Number(e.target.value))}
+                          max="15"
+                          value={r2Presentation}
+                          onChange={(e) => setR2Presentation(Number(e.target.value))}
                           disabled={finalPub.isPublished}
                           className="w-full accent-violet"
                         />

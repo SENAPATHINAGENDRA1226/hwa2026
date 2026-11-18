@@ -160,8 +160,9 @@ class HwaDatabase {
     const evaluations = this.getRound1Evaluations();
     const totalScore =
       evaluation.criteria.innovation +
-      evaluation.criteria.techComplexity +
-      evaluation.criteria.feasibility +
+      evaluation.criteria.problemUnderstanding +
+      evaluation.criteria.technicalFeasibility +
+      evaluation.criteria.practicalImplementation +
       evaluation.criteria.presentation;
 
     const existingIndex = evaluations.findIndex((e) => e.teamId === evaluation.teamId);
@@ -336,10 +337,11 @@ class HwaDatabase {
 
     const evaluations = this.getRound2Evaluations();
     const totalScore =
-      evaluation.criteria.implementation +
-      evaluation.criteria.aiArchitecture +
-      evaluation.criteria.viability +
-      evaluation.criteria.qnaDefense;
+      evaluation.criteria.innovation +
+      evaluation.criteria.problemUnderstanding +
+      evaluation.criteria.technicalFeasibility +
+      evaluation.criteria.practicalImplementation +
+      evaluation.criteria.presentation;
 
     const existingIndex = evaluations.findIndex((e) => e.teamId === evaluation.teamId);
 
