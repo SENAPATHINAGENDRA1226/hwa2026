@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Award,
   CheckCircle2,
@@ -15,6 +15,16 @@ import {
   LogOut,
   KeyRound,
   ShieldAlert,
+  QrCode,
+  Camera,
+  CameraOff,
+  Upload,
+  Search,
+  Check,
+  RefreshCw,
+  Sparkles,
+  UserCheck,
+  Volume2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { db } from "@/lib/db";
@@ -44,7 +54,7 @@ function JudgePortalPage() {
 
   const [judgeName, setJudgeName] = useState("Dr. Arvind Swamy (Jury #1)");
   const [judgeId, setJudgeId] = useState("JURY-01");
-  const [activeTab, setActiveTab] = useState<"round1" | "round2">("round1");
+  const [activeTab, setActiveTab] = useState<"round1" | "round2" | "attendance">("round1");
 
   // Round 1 State
   const [r1Teams, setR1Teams] = useState<Team[]>([]);
@@ -70,6 +80,16 @@ function JudgePortalPage() {
 
   const r1Pub = db.getRound1PublicationStatus();
   const finalPub = db.getFinalPublicationStatus();
+
+  // Attendance Scanner State
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanError, setScanError] = useState("");
+  const [lastScannedTeam, setLastScannedTeam] = useState<Team | null>(null);
+  const [manualTeamInput, setManualTeamInput] = useState("");
+  const [attendanceFilter, setAttendanceFilter] = useState<"all" | "present" | "pending">("all");
+  const [attendanceSearch, setAttendanceSearch] = useState("");
+  const html5QrCodeRef = useRef<any>(null);
+  const lastScannedTimeRef = useRef<{ id: string; time: number }>({ id: "", time: 0 });
 
   // Check stored session
   useEffect(() => {
@@ -248,6 +268,166 @@ function JudgePortalPage() {
     }
   };
 
+  // Web Audio chime for attendance scan confirmation
+  const playBeep = () => {
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.22);
+    } catch {}
+  };
+
+  const parseTeamIdFromScan = (rawText: string): string | null => {
+    if (!rawText) return null;
+    const trimmed = rawText.trim();
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (parsed.teamId) return String(parsed.teamId).toUpperCase();
+    } catch {}
+    const match = trimmed.match(/HWA-2026-\d+/i);
+    if (match) return match[0].toUpperCase();
+    const all = db.getTeams();
+    const found = all.find((t) => t.teamId.toLowerCase() === trimmed.toLowerCase());
+    if (found) return found.teamId;
+    return null;
+  };
+
+  const handleProcessCheckIn = (input: string) => {
+    const teamId = parseTeamIdFromScan(input);
+    if (!teamId) {
+      toast.error(`Invalid QR pass. Could not detect a valid Team ID from scanned data.`);
+      return false;
+    }
+
+    // Debounce scans within 3 seconds for the same team
+    const now = Date.now();
+    if (lastScannedTimeRef.current.id === teamId && now - lastScannedTimeRef.current.time < 3000) {
+      return true;
+    }
+    lastScannedTimeRef.current = { id: teamId, time: now };
+
+    const team = db.getTeam(teamId);
+    if (!team) {
+      toast.error(`Team "${teamId}" is not registered in the system.`);
+      return false;
+    }
+
+    playBeep();
+
+    if (team.attendanceStatus === "checked_in") {
+      toast.info(`Team ${team.teamName} (${team.teamId}) is already marked PRESENT.`);
+      setLastScannedTeam(team);
+      return true;
+    }
+
+    db.checkInTeam(team.teamId, judgeName);
+    toast.success(`PRESENT: Team ${team.teamName} (${team.teamId}) marked PRESENT!`);
+    setLastScannedTeam({ ...team, attendanceStatus: "checked_in" });
+    refreshData();
+    return true;
+  };
+
+  const startCameraScanner = async () => {
+    try {
+      setIsScanning(true);
+      setScanError("");
+      const { Html5Qrcode } = await import("html5-qrcode");
+      if (html5QrCodeRef.current) {
+        try {
+          await html5QrCodeRef.current.stop();
+        } catch {}
+      }
+      const qrScanner = new Html5Qrcode("judge-qr-reader");
+      html5QrCodeRef.current = qrScanner;
+
+      await qrScanner.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: { width: 240, height: 240 },
+          aspectRatio: 1.0,
+        },
+        (decodedText) => {
+          handleProcessCheckIn(decodedText);
+        },
+        () => {}
+      );
+    } catch (err: unknown) {
+      console.error(err);
+      setIsScanning(false);
+      setScanError(
+        "Camera access not granted or not supported in this environment. Use 'Upload QR Image' or manual Team ID entry.",
+      );
+      toast.error("Camera access failed or denied");
+    }
+  };
+
+  const stopCameraScanner = async () => {
+    if (html5QrCodeRef.current) {
+      try {
+        await html5QrCodeRef.current.stop();
+        html5QrCodeRef.current.clear();
+      } catch {}
+      html5QrCodeRef.current = null;
+    }
+    setIsScanning(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (html5QrCodeRef.current) {
+        try {
+          html5QrCodeRef.current.stop().catch(() => {});
+        } catch {}
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeTab !== "attendance" && isScanning) {
+      stopCameraScanner();
+    }
+  }, [activeTab]);
+
+  const handleQrFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      toast.info("Scanning QR code image file...");
+      const { Html5Qrcode } = await import("html5-qrcode");
+      const tempScanner = new Html5Qrcode("judge-qr-file-hidden");
+      const decodedText = await tempScanner.scanFile(file, true);
+      handleProcessCheckIn(decodedText);
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not find a valid QR code in this image. Please ensure the image is clear.");
+    }
+    e.target.value = "";
+  };
+
+  const handleManualCheckIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!manualTeamInput.trim()) {
+      toast.error("Please enter a Team ID.");
+      return;
+    }
+    const success = handleProcessCheckIn(manualTeamInput.trim());
+    if (success) {
+      setManualTeamInput("");
+    }
+  };
+
   const selectedR1Team = r1Teams.find((t) => t.teamId === r1SelectedTeamId);
   const selectedR2Team = r2EligibleTeams.find((t) => t.teamId === r2SelectedTeamId);
 
@@ -379,29 +559,39 @@ function JudgePortalPage() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 pt-8">
+        {/* Hidden file scanner anchor for static image decoding */}
+        <div id="judge-qr-file-hidden" className="hidden" />
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Evaluation & Scoring Matrix
+              Evaluation & Attendance Hub
             </h1>
             <p className="text-xs text-muted-foreground mt-1">
-              Independent scoring workflows for Preliminary (Round 1) and Grand Finals (Round 2)
+              Scoring workflows for Round 1 & Round 2, plus Live QR Attendance Scanner for team check-in
             </p>
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as "round1" | "round2")}>
-          <TabsList className="grid w-full sm:w-96 grid-cols-2 mb-6">
+        <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as "round1" | "round2" | "attendance")}>
+          <TabsList className="grid w-full sm:w-135 grid-cols-3 mb-6">
             <TabsTrigger value="round1" className="font-display font-semibold text-xs gap-1.5">
-              <span>Round 1 Evaluation</span>
+              <span>Round 1</span>
               <Badge variant="secondary" className="text-[10px] h-4 px-1">
                 {r1Evaluations.length}/{r1Teams.length}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="round2" className="font-display font-semibold text-xs gap-1.5">
-              <span>Round 2 Evaluation</span>
+              <span>Round 2</span>
               <Badge variant="secondary" className="text-[10px] h-4 px-1">
                 {r2Evaluations.length}/{r2EligibleTeams.length}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="attendance" className="font-display font-semibold text-xs gap-1.5">
+              <QrCode className="h-3.5 w-3.5 text-cyan" />
+              <span>QR Scanner</span>
+              <Badge variant="secondary" className="text-[10px] h-4 px-1">
+                {r1Teams.filter((t) => t.attendanceStatus === "checked_in").length}/{r1Teams.length}
               </Badge>
             </TabsTrigger>
           </TabsList>
@@ -891,6 +1081,381 @@ function JudgePortalPage() {
                 </div>
               </div>
             )}
+          </TabsContent>
+
+          {/* ======================================================== */}
+          {/* QR ATTENDANCE SCANNER TAB                                */}
+          {/* ======================================================== */}
+          <TabsContent value="attendance" className="space-y-6">
+            {/* KPI Summary Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-card border border-border rounded-xl p-4">
+                <span className="text-xs text-muted-foreground font-mono">Total Teams</span>
+                <div className="text-2xl font-black font-display text-foreground mt-1">{r1Teams.length}</div>
+                <span className="text-[11px] text-muted-foreground">Registered squads</span>
+              </div>
+              <div className="bg-card border border-emerald-500/30 bg-emerald-500/5 rounded-xl p-4">
+                <span className="text-xs text-emerald-400 font-mono">Checked In (Present)</span>
+                <div className="text-2xl font-black font-display text-emerald-400 mt-1">
+                  {r1Teams.filter((t) => t.attendanceStatus === "checked_in").length}
+                </div>
+                <span className="text-[11px] text-emerald-400/80">
+                  {r1Teams.length > 0
+                    ? Math.round((r1Teams.filter((t) => t.attendanceStatus === "checked_in").length / r1Teams.length) * 100)
+                    : 0}
+                  % Turnout
+                </span>
+              </div>
+              <div className="bg-card border border-amber-500/30 bg-amber-500/5 rounded-xl p-4">
+                <span className="text-xs text-amber-300 font-mono">Pending Check-in</span>
+                <div className="text-2xl font-black font-display text-amber-300 mt-1">
+                  {r1Teams.filter((t) => t.attendanceStatus !== "checked_in").length}
+                </div>
+                <span className="text-[11px] text-amber-300/80">Awaiting desk arrival</span>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-4 flex flex-col justify-between">
+                <div>
+                  <span className="text-xs text-muted-foreground font-mono">Scanner Status</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span
+                      className={`h-2.5 w-2.5 rounded-full ${isScanning ? "bg-emerald-400 animate-pulse" : "bg-muted-foreground"}`}
+                    />
+                    <span className="text-sm font-semibold text-foreground">
+                      {isScanning ? "Camera Active" : "Standby"}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <Volume2 className="h-3 w-3 text-cyan" /> Audio Chime Enabled
+                </span>
+              </div>
+            </div>
+
+            {/* Scanner Controls & Input Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Left Column: Live Camera & Scanner Interface */}
+              <div className="lg:col-span-5 space-y-4">
+                <div className="bg-card border border-border rounded-2xl p-5 shadow-lg">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <QrCode className="h-4 w-4 text-cyan" />
+                      <h3 className="font-display font-semibold text-sm">QR Code Camera Scanner</h3>
+                    </div>
+                    {isScanning && (
+                      <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                        Scanning Live
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Camera Viewport / Placeholder */}
+                  <div className="relative w-full aspect-square max-w-sm mx-auto rounded-xl overflow-hidden bg-black border border-border flex items-center justify-center">
+                    {/* HTML5 QR Code Mount point */}
+                    <div id="judge-qr-reader" className="w-full h-full" />
+
+                    {!isScanning && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-zinc-950/90">
+                        <div className="relative grid h-16 w-16 place-items-center rounded-2xl border border-cyan/40 bg-cyan/5 mb-3">
+                          <QrCode className="h-8 w-8 text-cyan animate-pulse" />
+                          <div className="absolute inset-0 rounded-2xl border border-cyan/20 animate-ping opacity-30" />
+                        </div>
+                        <p className="font-display font-semibold text-sm text-foreground">
+                          Camera Scanner Is In Standby
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1 max-w-[240px]">
+                          Click below to start your device camera and scan student attendance passes.
+                        </p>
+                        <Button
+                          onClick={startCameraScanner}
+                          className="mt-4 gap-2 bg-cyan text-slate-950 font-bold hover:bg-cyan/90 h-9 text-xs"
+                        >
+                          <Camera className="h-4 w-4" /> Start Camera Scanner
+                        </Button>
+                      </div>
+                    )}
+
+                    {isScanning && (
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-cyan glow-cyan animate-scan shadow-[0_0_12px_rgba(0,229,255,0.8)]" />
+                    )}
+                  </div>
+
+                  {scanError && (
+                    <div className="mt-3 p-3 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-xs">
+                      {scanError}
+                    </div>
+                  )}
+
+                  {/* Scanner Action Controls */}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {isScanning ? (
+                      <Button
+                        variant="destructive"
+                        onClick={stopCameraScanner}
+                        className="flex-1 gap-2 h-9 text-xs"
+                      >
+                        <CameraOff className="h-4 w-4" /> Stop Camera
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={startCameraScanner}
+                        className="flex-1 gap-2 bg-cyan text-slate-950 font-bold hover:bg-cyan/90 h-9 text-xs"
+                      >
+                        <Camera className="h-4 w-4" /> Open Camera
+                      </Button>
+                    )}
+
+                    <label className="cursor-pointer">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="gap-2 h-9 text-xs border-border hover:bg-muted"
+                        asChild
+                      >
+                        <span>
+                          <Upload className="h-4 w-4 text-cyan" /> Upload QR Image
+                        </span>
+                      </Button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleQrFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Instant Manual Team Check-in / Barcode Gun Fallback */}
+                <div className="bg-card border border-border rounded-2xl p-5 shadow-lg">
+                  <h4 className="font-display font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <UserCheck className="h-3.5 w-3.5 text-cyan" /> Fast Check-In / Barcode Gun
+                  </h4>
+                  <form onSubmit={handleManualCheckIn} className="flex gap-2">
+                    <Input
+                      placeholder="e.g. HWA-2026-101"
+                      value={manualTeamInput}
+                      onChange={(e) => setManualTeamInput(e.target.value)}
+                      className="font-mono text-xs uppercase"
+                    />
+                    <Button
+                      type="submit"
+                      className="bg-cyan text-slate-950 font-bold hover:bg-cyan/90 text-xs shrink-0 px-4"
+                    >
+                      Check In
+                    </Button>
+                  </form>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">
+                    Hardware barcode scanners and manual Team IDs automatically mark the team present on Enter.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Last Scanned Confirmation & Live Roster */}
+              <div className="lg:col-span-7 space-y-4">
+                {/* Last Scanned Team Confirmation Alert */}
+                {lastScannedTeam && (
+                  <div className="p-5 rounded-2xl border border-emerald-500/50 bg-emerald-500/10 text-foreground relative overflow-hidden shadow-lg animate-in fade-in duration-300">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                        <CheckCircle2 className="h-5 w-5" />
+                        <span>ATTENDANCE RECORDED — PRESENT</span>
+                      </div>
+                      <Badge className="bg-emerald-500 text-slate-950 font-bold text-[10px] uppercase">
+                        SUCCESS
+                      </Badge>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <span className="text-muted-foreground text-[10px] uppercase font-mono">Team ID</span>
+                        <div className="font-mono text-base font-bold text-foreground">
+                          {lastScannedTeam.teamId}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground text-[10px] uppercase font-mono">Team Name</span>
+                        <div className="font-display text-base font-bold text-foreground">
+                          {lastScannedTeam.teamName}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground text-[10px] uppercase font-mono">Theme / Track</span>
+                        <div className="text-foreground font-medium">{lastScannedTeam.theme || "Open Innovation"}</div>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground text-[10px] uppercase font-mono">Year & Branch</span>
+                        <div className="text-foreground font-medium">
+                          {lastScannedTeam.academicYear} • {lastScannedTeam.department || "CSM / CSD"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 pt-3 border-t border-emerald-500/20 text-xs">
+                      <span className="text-muted-foreground text-[10px] uppercase font-mono">Team Participants ({lastScannedTeam.members.length}):</span>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        {lastScannedTeam.members.map((m, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 bg-black/40 border border-emerald-500/30 text-emerald-300 text-[11px]"
+                          >
+                            <span className="font-semibold">{m.name}</span>
+                            {idx === 0 && <span className="text-[9px] text-cyan">(Leader)</span>}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Team Roster Filter & List */}
+                <div className="bg-card border border-border rounded-2xl p-5 shadow-lg space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-display font-semibold text-sm">Attendance Roster</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Live participant verification and manual status controls
+                      </p>
+                    </div>
+
+                    {/* Filter Pills */}
+                    <div className="flex items-center gap-1 p-1 bg-muted/60 rounded-lg text-xs">
+                      <button
+                        onClick={() => setAttendanceFilter("all")}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                          attendanceFilter === "all"
+                            ? "bg-cyan text-slate-950 shadow"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        All ({r1Teams.length})
+                      </button>
+                      <button
+                        onClick={() => setAttendanceFilter("present")}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                          attendanceFilter === "present"
+                            ? "bg-emerald-500 text-slate-950 shadow"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        Present ({r1Teams.filter((t) => t.attendanceStatus === "checked_in").length})
+                      </button>
+                      <button
+                        onClick={() => setAttendanceFilter("pending")}
+                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                          attendanceFilter === "pending"
+                            ? "bg-amber-400 text-slate-950 shadow"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        Pending ({r1Teams.filter((t) => t.attendanceStatus !== "checked_in").length})
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search by Team ID, team name, or student participant name..."
+                      value={attendanceSearch}
+                      onChange={(e) => setAttendanceSearch(e.target.value)}
+                      className="pl-9 text-xs"
+                    />
+                  </div>
+
+                  {/* Team List Table */}
+                  <div className="border border-border rounded-xl overflow-hidden max-h-[480px] overflow-y-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-muted/60 text-muted-foreground font-mono uppercase text-[10px] sticky top-0 z-10 backdrop-blur">
+                        <tr>
+                          <th className="p-3">Team</th>
+                          <th className="p-3 hidden sm:table-cell">Members</th>
+                          <th className="p-3">Status</th>
+                          <th className="p-3 text-right">Quick Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {filteredAttendanceTeams.length === 0 ? (
+                          <tr>
+                            <td colSpan={4} className="p-6 text-center text-muted-foreground">
+                              No teams found matching current criteria.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredAttendanceTeams.map((t) => {
+                            const isPresent = t.attendanceStatus === "checked_in";
+                            return (
+                              <tr
+                                key={t.id}
+                                className={`transition-colors hover:bg-muted/40 ${
+                                  isPresent ? "bg-emerald-500/[0.03]" : ""
+                                }`}
+                              >
+                                <td className="p-3">
+                                  <div className="font-mono text-cyan font-semibold text-[11px]">{t.teamId}</div>
+                                  <div className="font-bold text-foreground text-xs mt-0.5">{t.teamName}</div>
+                                  <div className="text-[10px] text-muted-foreground sm:hidden mt-0.5">
+                                    {t.members.length} {t.members.length === 1 ? "participant" : "participants"}
+                                  </div>
+                                </td>
+                                <td className="p-3 hidden sm:table-cell">
+                                  <div className="font-medium text-foreground">{t.members[0]?.name} (Leader)</div>
+                                  <div className="text-[11px] text-muted-foreground">
+                                    {t.members.length > 1
+                                      ? `+ ${t.members.length - 1} more (${t.academicYear})`
+                                      : t.academicYear}
+                                  </div>
+                                </td>
+                                <td className="p-3">
+                                  {isPresent ? (
+                                    <Badge className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-semibold gap-1">
+                                      <Check className="h-3 w-3" /> PRESENT
+                                    </Badge>
+                                  ) : (
+                                    <Badge variant="outline" className="text-muted-foreground border-border text-[10px]">
+                                      PENDING
+                                    </Badge>
+                                  )}
+                                </td>
+                                <td className="p-3 text-right">
+                                  {isPresent ? (
+                                    <button
+                                      onClick={() => {
+                                        db.setTeamAttendance(t.teamId, "pending", judgeName);
+                                        refreshData();
+                                        toast.info(`Team ${t.teamId} reset to Pending.`);
+                                      }}
+                                      className="text-[11px] text-muted-foreground hover:text-amber-400 font-semibold"
+                                      title="Reset attendance to pending"
+                                    >
+                                      Set Pending
+                                    </button>
+                                  ) : (
+                                    <Button
+                                      size="sm"
+                                      onClick={() => {
+                                        db.checkInTeam(t.teamId, judgeName);
+                                        playBeep();
+                                        setLastScannedTeam({ ...t, attendanceStatus: "checked_in" });
+                                        refreshData();
+                                        toast.success(`PRESENT: Team ${t.teamName} checked in.`);
+                                      }}
+                                      className="h-7 text-xs bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-3"
+                                    >
+                                      Mark Present
+                                    </Button>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </main>

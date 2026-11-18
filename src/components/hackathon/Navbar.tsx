@@ -1,4 +1,4 @@
-import { Menu, X, Shield, Award, User, ExternalLink } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
@@ -40,31 +40,31 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-500", scrolled ? "py-2" : "py-4")}>
+    <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-500", scrolled ? "py-2" : "py-3 sm:py-4")}>
       <nav
         className={cn(
-          "mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-5 py-2.5 transition-all duration-500 sm:px-6",
-          scrolled ? "glass mx-3 sm:mx-6 xl:mx-auto shadow-2xl" : "border border-border/40 bg-background/60 backdrop-blur-md mx-3 sm:mx-6 xl:mx-auto",
+          "mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-4 py-2 sm:px-6 sm:py-2.5 transition-all duration-500",
+          scrolled ? "glass mx-3 sm:mx-6 xl:mx-auto shadow-2xl" : "border border-border/40 bg-background/70 backdrop-blur-md mx-3 sm:mx-6 xl:mx-auto",
         )}
       >
         {/* Brand / Logo */}
-        <Link to="/" className="flex items-center gap-3 shrink-0 mr-6 lg:mr-8 group">
-          <span className="relative grid h-9 w-9 place-items-center rounded-lg border border-border bg-glass">
+        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
+          <span className="relative grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-lg border border-border bg-glass shrink-0">
             <span className="absolute inset-1 rounded-md border border-cyan/40 animate-spin-slow" />
-            <span className="h-2 w-2 rounded-full bg-cyan glow-cyan" />
+            <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-cyan glow-cyan" />
           </span>
           <div className="flex flex-col">
-            <span className="font-display text-sm font-bold tracking-[0.18em] whitespace-nowrap leading-tight">
+            <span className="font-display text-xs sm:text-sm font-bold tracking-[0.16em] sm:tracking-[0.18em] whitespace-nowrap leading-tight">
               HWA<span className="text-cyan">’26</span>
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground/80 leading-none pt-0.5">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-wider text-muted-foreground/80 leading-none pt-0.5 whitespace-nowrap">
               Powered by <span className="text-blue-400 font-semibold">Unstop</span>
             </span>
           </div>
         </Link>
 
-        {/* Center Desktop Navigation Links */}
-        <div className="hidden xl:flex items-center gap-6 lg:gap-7 shrink-0">
+        {/* Desktop Navigation Links (XL screens: 1280px+) */}
+        <div className="hidden xl:flex items-center gap-6 shrink-0">
           <ul className="flex items-center gap-4 lg:gap-5">
             {DESKTOP_NAV.map((l) => (
               <li key={l.href}>
@@ -83,7 +83,7 @@ export function Navbar() {
           <div className="h-4 w-px bg-border/80" />
 
           {/* System Portals */}
-          <ul className="flex items-center gap-4 lg:gap-5">
+          <ul className="flex items-center gap-4">
             <li>
               <Link
                 to="/portal"
@@ -119,46 +119,37 @@ export function Navbar() {
           </ul>
         </div>
 
-        {/* Tablet / Smaller desktop compact menu (between md and xl) */}
-        <div className="hidden md:flex xl:hidden items-center gap-4 shrink-0">
-          <Link to="/portal" className="font-mono text-xs uppercase tracking-wider text-cyan font-semibold">
-            Portal
-          </Link>
-          <Link to="/judge" className="font-mono text-xs uppercase tracking-wider text-violet">
-            Judge
-          </Link>
-          <Link to="/admin" className="font-mono text-xs uppercase tracking-wider text-red-400">
-            Admin
-          </Link>
-          <Link to="/results" className="font-mono text-xs uppercase tracking-wider text-amber-300">
-            Results
-          </Link>
-        </div>
+        {/* Right Side: Register button & Mobile Toggle */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Desktop & Tablet Register Button (Hidden on small phones to prevent cramped bar) */}
+          <div className="hidden sm:block">
+            <RegisterButton size="sm" />
+          </div>
 
-        {/* Action Button on Right */}
-        <div className="hidden md:block shrink-0 ml-4">
-          <RegisterButton />
+          {/* Mobile / Tablet Hamburger Button */}
+          <button
+            className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-lg border border-border bg-glass xl:hidden text-foreground hover:text-cyan transition-colors"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
         </div>
-
-        {/* Mobile Hamburger Button */}
-        <button
-          className="grid h-10 w-10 place-items-center rounded-lg border border-border bg-glass md:hidden"
-          onClick={() => setOpen((o) => !o)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
       </nav>
 
       {/* Mobile Drawer */}
       <div
         className={cn(
-          "mx-3 mt-2 overflow-y-auto max-h-[85vh] rounded-2xl transition-all duration-500 md:hidden",
-          open ? "glass opacity-100 p-4" : "max-h-0 opacity-0 pointer-events-none p-0",
+          "mx-3 mt-2 overflow-y-auto max-h-[85vh] rounded-2xl transition-all duration-300 xl:hidden",
+          open ? "glass opacity-100 p-4 shadow-2xl border border-border" : "max-h-0 opacity-0 pointer-events-none p-0 overflow-hidden",
         )}
       >
         <div className="space-y-4">
+          <div className="sm:hidden pb-2 border-b border-border/50">
+            <RegisterButton size="sm" className="w-full" />
+          </div>
+
           <p className="font-mono text-[11px] uppercase tracking-widest text-cyan font-bold px-2">
             Event Sections
           </p>
@@ -168,7 +159,7 @@ export function Navbar() {
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="block rounded-lg px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 >
                   {l.label}
                 </a>
@@ -195,7 +186,7 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className="block rounded-lg px-3 py-2 text-violet hover:bg-muted"
               >
-                Judge Portal
+                Judge Portal & Attendance
               </Link>
             </li>
             <li>
@@ -218,8 +209,8 @@ export function Navbar() {
             </li>
           </ul>
 
-          <div className="pt-2">
-            <RegisterButton className="w-full text-center justify-center" />
+          <div className="hidden sm:block pt-2">
+            <RegisterButton size="sm" className="w-full" />
           </div>
         </div>
       </div>

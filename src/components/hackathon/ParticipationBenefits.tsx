@@ -75,7 +75,7 @@ export function ParticipationBenefits() {
           {/* Box 2: For Round 2 Qualified Candidates */}
           <Reveal delay={0.1}>
             <div className="glass group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-violet/40 p-8 transition-all duration-300 hover:border-violet hover:-translate-y-1">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-violet via-fuchsia-500 to-pink-500" />
+              <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-violet via-fuchsia-500 to-pink-500" />
               <div>
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet/40 bg-violet/10 text-violet">

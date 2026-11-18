@@ -133,12 +133,20 @@ class HwaDatabase {
   }
 
   checkInTeam(teamId: string, adminName = "Attendance Coordinator") {
+    this.setTeamAttendance(teamId, "checked_in", adminName);
+  }
+
+  setTeamAttendance(teamId: string, status: "checked_in" | "pending", adminName = "Attendance Coordinator") {
     const teams = this.getTeams();
     const index = teams.findIndex((t) => t.teamId === teamId);
     if (index !== -1) {
-      teams[index]!.attendanceStatus = "checked_in";
+      teams[index]!.attendanceStatus = status;
       setItem("teams", teams);
-      this.addAuditLog("ATTENDANCE_CHECKED_IN", adminName, { teamId });
+      this.addAuditLog(
+        status === "checked_in" ? "ATTENDANCE_CHECKED_IN" : "ATTENDANCE_RESET_PENDING",
+        adminName,
+        { teamId, status },
+      );
     }
   }
 
@@ -474,6 +482,81 @@ class HwaDatabase {
 
   getCertificatesForTeam(teamId: string): CertificateRecord[] {
     return this.getCertificateRecords().filter((c) => c.teamId === teamId);
+  }
+
+  ensureTeamCertificates(teamId: string): CertificateRecord[] {
+    const team = this.getTeam(teamId);
+    if (!team) return [];
+
+    const r1Pub = this.getRound1PublicationStatus();
+    const finalPub = this.getFinalPublicationStatus();
+    const r1Selection = this.getRound1SelectionForTeam(teamId);
+    const finalResults = this.getFinalResults();
+    const teamFinal = finalResults.find((r) => r.teamId === teamId);
+
+    // If no round results are published yet, return existing
+    if (!r1Pub.isPublished && !finalPub.isPublished) {
+      return this.getCertificatesForTeam(teamId);
+    }
+
+    const certs = this.getCertificateRecords();
+    let updated = false;
+
+    let category: CertificateCategory = "round_1_participation";
+    let templateType = "participation_round_1";
+
+    if (finalPub.isPublished && teamFinal) {
+      if (teamFinal.position === "first_place") {
+        category = "winner";
+        templateType = "champion_1st";
+      } else if (teamFinal.position === "second_place") {
+        category = "runner_up";
+        templateType = "runner_up_2nd";
+      } else if (teamFinal.position === "third_place") {
+        category = "third_place";
+        templateType = "third_place_3rd";
+      } else {
+        category = "round_2_participation";
+        templateType = "round_2_finalist";
+      }
+    } else if (r1Pub.isPublished) {
+      if (r1Selection?.status === "selected") {
+        if (!finalPub.isPublished) {
+          return this.getCertificatesForTeam(teamId);
+        }
+      } else {
+        category = "round_1_participation";
+        templateType = "participation_round_1";
+      }
+    }
+
+    for (const member of team.members) {
+      const exists = certs.find(
+        (c) => c.teamId === team.teamId && c.recipientEmail.toLowerCase() === member.email.toLowerCase(),
+      );
+      if (!exists) {
+        updated = true;
+        const certId = `HWA-CERT-${category === "round_1_participation" ? "R1" : "R2"}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        certs.push({
+          id: `cert-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          certificateId: certId,
+          teamId: team.teamId,
+          teamName: team.teamName,
+          recipientName: member.name,
+          recipientEmail: member.email,
+          category,
+          issuedAt: new Date().toISOString(),
+          verificationCode: Math.random().toString(36).substring(2, 10).toUpperCase(),
+          template: templateType,
+        });
+      }
+    }
+
+    if (updated) {
+      setItem("certificate_records", certs);
+    }
+
+    return this.getCertificatesForTeam(teamId);
   }
 
   getCertificateById(certId: string): CertificateRecord | undefined {

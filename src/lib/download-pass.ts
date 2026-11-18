@@ -115,8 +115,8 @@ export async function downloadTeamQrPass(team: {
   ctx.fillStyle = "#94a3b8";
   ctx.font = "12px sans-serif";
   ctx.fillText("Present this QR pass at the venue registration desk for team check-in.", width / 2, 655);
-  ctx.fillText("Valid for all 4 team members • AIET Campus, Vizag", width / 2, 680);
-  ctx.fillText("18 – 19 December 2026", width / 2, 705);
+  ctx.fillText("Valid for all team participants • AIET Campus, VZM", width / 2, 680);
+  ctx.fillText("21 – 22 December 2026", width / 2, 705);
 
   // Bottom Security Token
   ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";

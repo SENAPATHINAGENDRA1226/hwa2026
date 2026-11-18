@@ -79,22 +79,22 @@ export function Hero() {
               Powered by Unstop
             </div>
           </div>
-          <h1 className="font-display font-black leading-[0.95] tracking-tight perspective-[600px]">
+          <h1 className="font-display font-black leading-[0.95] tracking-tight perspective-[600px] break-words">
             <span className="sr-only">{EVENT.name}</span>
-            <Chars text="HACK WITH" className="block text-4xl sm:text-6xl lg:text-7xl" />
-            <Chars text="AVANTHI" className="block text-5xl sm:text-7xl lg:text-8xl" charClassName="text-glow" />
-            <Chars text="2026" className="block pb-2 text-5xl sm:text-7xl lg:text-8xl" charClassName="text-neon" />
+            <Chars text="HACK WITH" className="block text-3xl sm:text-5xl lg:text-7xl" />
+            <Chars text="AVANTHI" className="block text-4xl sm:text-6xl lg:text-8xl" charClassName="text-glow" />
+            <Chars text="2026" className="block pb-2 text-4xl sm:text-6xl lg:text-8xl" charClassName="text-neon" />
           </h1>
           <p className="hero-fade mt-6 font-display text-lg tracking-wide text-cyan sm:text-2xl">{EVENT.tagline}</p>
           <p className="hero-fade mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
             A two-day,technical hackathon at {EVENT.institute}. Assemble your team, pick a theme and build
             the future of intelligent technology.
           </p>
-          <div className="hero-fade mt-8 flex flex-wrap items-center gap-4">
+          <div className="hero-fade mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
             <RegisterButton size="lg" />
             <a
               href="#about"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-glass px-7 py-4 font-display text-xs font-semibold uppercase tracking-[0.15em] text-foreground backdrop-blur transition-colors hover:border-cyan/60 hover:text-cyan sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-glass px-5 py-3 sm:px-7 sm:py-4 font-display text-xs font-semibold uppercase tracking-[0.15em] text-foreground backdrop-blur transition-colors hover:border-cyan/60 hover:text-cyan sm:text-sm"
             >
               Explore Event
             </a>

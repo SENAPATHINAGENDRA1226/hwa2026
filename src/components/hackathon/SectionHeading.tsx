@@ -13,7 +13,7 @@ export function SectionHeading({ eyebrow, title, highlight, description, classNa
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6 }}
-        className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-glass px-4 py-1.5 font-mono text-xs uppercase tracking-[0.25em] text-cyan"
+        className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-glass px-3.5 py-1 sm:px-4 sm:py-1.5 font-mono text-[11px] sm:text-xs uppercase tracking-wider sm:tracking-[0.2em] text-cyan max-w-full text-center flex-wrap justify-center"
       >
         <span className="h-1.5 w-1.5 rounded-full bg-cyan animate-pulse-glow" />
         {eyebrow}

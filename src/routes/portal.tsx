@@ -108,7 +108,7 @@ function StudentPortal() {
     ? finalResults.find((r) => r.teamId === selectedTeam.teamId)
     : undefined;
 
-  const teamCerts = selectedTeam ? db.getCertificatesForTeam(selectedTeam.teamId) : [];
+  const teamCerts = selectedTeam ? db.ensureTeamCertificates(selectedTeam.teamId) : [];
 
   const isR1Selected = r1Pub.isPublished && r1Selection?.status === "selected";
   const isR1NotSelected = r1Pub.isPublished && r1Selection?.status === "not_selected";
@@ -528,15 +528,31 @@ function StudentPortal() {
 
             {/* ISSUED CREDENTIALS & CERTIFICATES */}
             <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="font-display text-xl font-bold flex items-center gap-2">
                     <Award className="h-5 w-5 text-cyan" /> Verified Certificates
+                    {teamCerts.length > 0 && (
+                      <Badge variant="outline" className="border-cyan/40 text-cyan text-xs">
+                        {teamCerts.length} {teamCerts.length === 1 ? "Certificate" : "Certificates"}
+                      </Badge>
+                    )}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Official verified credentials for team members
+                    Official verified credentials for all team participants
                   </p>
                 </div>
+
+                {teamCerts.length > 1 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setActiveCert(teamCerts[0])}
+                    className="h-8 text-xs gap-1.5 border-cyan/40 text-cyan hover:bg-cyan/10"
+                  >
+                    <Users className="h-3.5 w-3.5" /> View All Team Certificates
+                  </Button>
+                )}
               </div>
 
               {teamCerts.length === 0 ? (
@@ -546,7 +562,7 @@ function StudentPortal() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {teamCerts.map((cert) => (
+                  {teamCerts.map((cert, idx) => (
                     <div
                       key={cert.id}
                       className="p-4 rounded-2xl border border-border bg-background/50 hover:border-cyan/50 transition-colors flex flex-col justify-between"
@@ -558,7 +574,14 @@ function StudentPortal() {
                             {cert.category.replace(/_/g, " ")}
                           </Badge>
                         </div>
-                        <div className="font-display font-bold text-base text-foreground">{cert.recipientName}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="font-display font-bold text-base text-foreground">{cert.recipientName}</div>
+                          {idx === 0 && (
+                            <Badge className="bg-cyan/20 text-cyan border border-cyan/30 text-[9px] py-0 px-1.5">
+                              Team Leader
+                            </Badge>
+                          )}
+                        </div>
                         <div className="text-xs text-muted-foreground">{cert.recipientEmail}</div>
                       </div>
 
@@ -584,7 +607,12 @@ function StudentPortal() {
       </main>
 
       {/* Certificate Viewer Modal */}
-      <CertificateModal certificate={activeCert} onClose={() => setActiveCert(null)} />
+      <CertificateModal
+        certificate={activeCert}
+        allTeamCertificates={teamCerts}
+        onSelectCertificate={(c) => setActiveCert(c)}
+        onClose={() => setActiveCert(null)}
+      />
     </div>
   );
 }
