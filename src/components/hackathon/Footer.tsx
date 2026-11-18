@@ -32,7 +32,7 @@ export function Footer() {
               Vizianagaram, Andhra Pradesh, India
             </p>
             <p className="text-xs text-muted-foreground/80 pt-1">
-              Organised by <strong className="text-foreground">{EVENT.organiser}</strong> · Where Intelligence Meets Innovation.
+              Organised by <strong className="text-foreground">{EVENT.organiser}</strong> · Powered by <strong className="text-blue-400">Unstop</strong> · Where Intelligence Meets Innovation.
             </p>
           </div>
 

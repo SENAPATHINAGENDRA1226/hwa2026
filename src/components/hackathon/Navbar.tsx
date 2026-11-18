@@ -48,14 +48,19 @@ export function Navbar() {
         )}
       >
         {/* Brand / Logo */}
-        <Link to="/" className="flex items-center gap-3 shrink-0 mr-6 lg:mr-8">
+        <Link to="/" className="flex items-center gap-3 shrink-0 mr-6 lg:mr-8 group">
           <span className="relative grid h-9 w-9 place-items-center rounded-lg border border-border bg-glass">
             <span className="absolute inset-1 rounded-md border border-cyan/40 animate-spin-slow" />
             <span className="h-2 w-2 rounded-full bg-cyan glow-cyan" />
           </span>
-          <span className="font-display text-sm font-bold tracking-[0.18em] whitespace-nowrap">
-            HWA<span className="text-cyan">’26</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display text-sm font-bold tracking-[0.18em] whitespace-nowrap leading-tight">
+              HWA<span className="text-cyan">’26</span>
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground/80 leading-none pt-0.5">
+              Powered by <span className="text-blue-400 font-semibold">Unstop</span>
+            </span>
+          </div>
         </Link>
 
         {/* Center Desktop Navigation Links */}

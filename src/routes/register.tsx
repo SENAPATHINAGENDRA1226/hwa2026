@@ -199,7 +199,12 @@ function RegisterPage() {
           /* REGISTRATION FORM */
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-cyan">Team Registration</span>
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs uppercase tracking-widest text-cyan">Team Registration</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-blue-400 border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 rounded-full font-semibold">
+                  Powered by Unstop
+                </span>
+              </div>
               <h1 className="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Register for HWA 2026</h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 Enter your team details, members, and payment reference to obtain your official Team ID.

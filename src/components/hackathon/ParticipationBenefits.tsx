@@ -23,7 +23,7 @@ export function ParticipationBenefits() {
 
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Credentials & Honors"
+          eyebrow="Powered by Unstop • Credentials & Honors"
           title="Participation Benefits"
           highlight="For All Teams"
           description="Every builder leaves with verified credentials backed by Unstop and Avanthi Institute of Engineering and Technology."

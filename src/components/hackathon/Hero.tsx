@@ -69,9 +69,15 @@ export function Hero() {
 
       <div className="hero-content relative mx-auto w-full max-w-7xl px-5 sm:px-8">
         <div data-intro className="invisible max-w-2xl">
-          <div className="hero-badge mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-glass px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan animate-pulse-glow" />
-            {EVENT.organiser} presents
+          <div className="mb-6 flex flex-wrap items-center gap-2.5">
+            <div className="hero-badge inline-flex items-center gap-2 rounded-full border border-border bg-glass px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan animate-pulse-glow" />
+              {EVENT.organiser} presents
+            </div>
+            <div className="hero-badge inline-flex items-center gap-1.5 rounded-full border border-blue-500/40 bg-blue-500/10 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 backdrop-blur font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+              Powered by Unstop
+            </div>
           </div>
           <h1 className="font-display font-black leading-[0.95] tracking-tight perspective-[600px]">
             <span className="sr-only">{EVENT.name}</span>
